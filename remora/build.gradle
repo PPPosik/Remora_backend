@@ -24,3 +24,8 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+javadoc {
+	source = sourceSets.main.java.srcDirs
+	options.encoding = 'UTF-8'
+}
