@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HealthController {
     /**
-     * @Author Seong Jin
-     * @Param
+     *
      * @return Healthy
      * @throws Exception
      */
