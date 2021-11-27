@@ -25,16 +25,22 @@ public class FrameExtractionService {
 
         try {
             FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(request.originVideo));
+            int totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
+            int frameInterval = 10;
             Picture picture = null;
 
-            while ((picture = grab.getNativeFrame()) != null) {
-                response.frameSet.add(picture);
-                System.out.println(picture.getWidth() + " " + picture.getHeight());
-            }
+            System.out.println("totalFrames : " + totalFrames);
 
-            for (int i = 0; i < response.frameSet.size(); i += 2) {
-                BufferedImage bufferedImage = AWTUtil.toBufferedImage(response.frameSet.get(i));
-                ImageIO.write(bufferedImage, "png", new File("C:\\testFrame\\frame" + i + ".png"));
+            for (int i = 0; i < totalFrames; i += frameInterval) {
+                if ((picture = grab.seekToFramePrecise(i).getNativeFrame()) != null) {
+                    response.frameSet.add(picture);
+                    System.out.println(i + " " + picture.getWidth() + " " + picture.getHeight());
+
+                    BufferedImage bufferedImage = AWTUtil
+                            .toBufferedImage(response.frameSet.get((response.frameSet.size() - 1)));
+                    ImageIO.write(bufferedImage, "png",
+                            new File("C:\\testFrame\\frame" + (response.frameSet.size() - 1) + ".png"));
+                }
             }
 
             response.success = true;
