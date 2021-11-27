@@ -7,9 +7,9 @@ import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
 
 @RestController
 public class FrameExtractinController {
-    FrameExtractionService frameExtractionService;
+    FrameExtractionService frameExtractionService = new FrameExtractionService();
 
-    public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) throws Exception {
+    public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) {
         return frameExtractionService.frameExtract(request);
     }
 }
