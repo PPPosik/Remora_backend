@@ -18,7 +18,7 @@ public class UploadRequestDto {
     private Boolean needTranslate;
 
     public UploadRequestDto(List<MultipartFile> files, Boolean needTranslate) {
-        originVideo = files;
+        this.originVideo = files;
         this.needTranslate = needTranslate;
     }
 

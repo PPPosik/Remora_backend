@@ -1,7 +1,7 @@
 package remora.remora.Api.ApiDTO;
 
 public class SimpleResponseDto {
-    boolean success;
+    Boolean success;
     String message;
     int code;
 }

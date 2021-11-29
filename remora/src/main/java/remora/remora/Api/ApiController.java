@@ -16,27 +16,27 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/remora")
+@RequestMapping("/")
 public class ApiController {
 
     private ApiService apiService = new ApiService();
 
-    @GetMapping(value = "/video", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @GetMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     UploadResponseDto uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
                                   @RequestParam("needTranslate") String needTranslate) throws IOException {
 
-        boolean trans = needTranslate.equals("true");
+        Boolean trans = needTranslate.equals("true");
 
         UploadRequestDto uploadReqDto = new UploadRequestDto(files, trans);
         return apiService.uploadVideo(uploadReqDto);
     }
 
-    @PutMapping("/video")
+    @PutMapping("/upload")
     SimpleResponseDto changeVideo(@RequestBody UploadRequestDto uploadReqDto){
         return apiService.changeVideo(uploadReqDto);
     }
 
-    @DeleteMapping("/video")
+    @DeleteMapping("/upload")
     SimpleResponseDto deleteVideo(@RequestBody DeleteRequestDto deleteReqDto){
         return apiService.deleteVideo(deleteReqDto);
     }
