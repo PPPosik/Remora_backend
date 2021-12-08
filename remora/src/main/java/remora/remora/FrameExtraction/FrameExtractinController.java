@@ -10,6 +10,11 @@ public class FrameExtractinController {
     FrameExtractionService frameExtractionService = new FrameExtractionService();
 
     public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) {
-        return frameExtractionService.frameExtract(request);
+        try {
+            return frameExtractionService.frameExtract(request);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

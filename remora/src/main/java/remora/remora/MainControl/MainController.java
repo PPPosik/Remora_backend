@@ -17,7 +17,7 @@ public class MainController {
         FrameExtractionRequestDto request = new FrameExtractionRequestDto();
         FrameExtractionResponseDto response = null;
 
-        request.originVideo = new File("C:\\testVideo.mp4");
+        request.originVideo = new File("C:\\testVideo3.mp4");
         response = frameExtractionController.frameExtract(request);
         if(response.success) {
             System.out.println("Success frame extraction");
