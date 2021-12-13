@@ -2,16 +2,16 @@ package remora.remora.FrameExtraction;
 
 import java.util.ArrayList;
 
-import org.jcodec.common.model.Picture;
 import org.springframework.stereotype.Service;
 
+import remora.remora.Common.PicturePair;
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
 import remora.remora.FrameExtraction.thread.ExtractionThread;
 
 @Service
 public class FrameExtractionService {
-    public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) {
+    public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) throws InterruptedException {
         FrameExtractionResponseDto response = new FrameExtractionResponseDto();
         int frameInterval = 10;
         int threadSize = 8;
@@ -19,7 +19,7 @@ public class FrameExtractionService {
         boolean isRunning = true;
 
         response.success = false;
-        response.frameSet = new ArrayList<Picture>();
+        response.frameSet = new ArrayList<PicturePair>();
 
         for (int i = 0; i < threadSize; i++) {
             extractionThread[i] = new ExtractionThread(i, threadSize, frameInterval, response, request.originVideo);

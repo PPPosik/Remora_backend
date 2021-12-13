@@ -12,6 +12,7 @@ import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
+import remora.remora.Common.PicturePair;
 
 public class ExtractionThread extends Thread {
     private int threadNo;
@@ -32,21 +33,22 @@ public class ExtractionThread extends Thread {
     public void run() {
         try {
             FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(originVideo));
-            Picture picture = null;
             int totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
-
+            
             System.out.println("totalFrames : " + totalFrames);
-
-            for (int i = 0; i < totalFrames; i += frameInterval) {
-                if (i % threadSize == threadNo) {
+            
+            for (int i = 0, threadIdx = 0; i < totalFrames; i += frameInterval, threadIdx++) {
+                if (threadIdx % threadSize == threadNo) {
+                    Picture picture = null;
                     if ((picture = grab.seekToFramePrecise(i).getNativeFrame()) != null) {
-                        response.frameSet.add(picture);
-                        System.out.println(i + " " + picture.getWidth() + " " + picture.getHeight());
+                        response.frameSet.add(new PicturePair(i, picture));
+                        System.out.println("Extraction : " + i + ", width : " + picture.getWidth() + ", height : "
+                                + picture.getHeight());
 
-                        BufferedImage bufferedImage = AWTUtil
-                                .toBufferedImage(response.frameSet.get((response.frameSet.size() - 1)));
-                        ImageIO.write(bufferedImage, "png",
-                                new File("C:\\testFrame\\frame" + (response.frameSet.size() - 1) + ".png"));
+                    BufferedImage bufferedImage = AWTUtil.toBufferedImage(response.frameSet.get(response.frameSet.size() - 1).second());
+                    ImageIO.write(bufferedImage, "png",
+                            new File("C:\\testFrame3\\frame" + response.frameSet.get(response.frameSet.size() - 1).first() + ".png"));
+                    System.out.println("Write : " + response.frameSet.get(response.frameSet.size() - 1).first() + ".png");
                     }
                 }
             }
