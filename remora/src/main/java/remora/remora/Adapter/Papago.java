@@ -10,14 +10,17 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.MalformedURLException;
 import java.util.Map;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.util.HashMap;
 import java.io.InputStream;
 
 public class Papago {
     public static String call(String originText) {
-        // TODO fake value, need .env
-        String clientId = "AAA";
-        String clientSecret = "AAA";
+        Dotenv dotenv = Dotenv.configure().load();
+        String clientId = dotenv.get("PAPAGO_ID");
+        String clientSecret = dotenv.get("PAPAGO_PW");
 
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
