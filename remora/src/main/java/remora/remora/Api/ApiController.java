@@ -14,16 +14,20 @@ import java.util.List;
 /**
  * Video 업로드 및 응답을 받기 위한 Controller
  */
-
 @RestController
-@RequestMapping("/")
 public class ApiController {
 
     private ApiService apiService = new ApiService();
 
-    @GetMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    UploadResponseDto uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
-                                  @RequestParam("needTranslate") String needTranslate) throws IOException {
+    /**
+     *
+     * @param files
+     * @param needTranslate
+     * @return UploadResponseDto
+     * @throws IOException
+     */
+    public UploadResponseDto uploadVideo(List<MultipartFile> files,
+                                         String needTranslate) throws IOException {
 
         Boolean trans = needTranslate.equals("true");
 
@@ -31,13 +35,21 @@ public class ApiController {
         return apiService.uploadVideo(uploadReqDto);
     }
 
-    @PutMapping("/upload")
-    SimpleResponseDto changeVideo(@RequestBody UploadRequestDto uploadReqDto){
+    /**
+     *
+     * @param uploadReqDto
+     * @return SimpleResponseDto
+     */
+    public SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto){
         return apiService.changeVideo(uploadReqDto);
     }
 
-    @DeleteMapping("/upload")
-    SimpleResponseDto deleteVideo(@RequestBody DeleteRequestDto deleteReqDto){
+    /**
+     *
+     * @param deleteReqDto
+     * @return SimpleResponseDto
+     */
+    public SimpleResponseDto deleteVideo(DeleteRequestDto deleteReqDto){
         return apiService.deleteVideo(deleteReqDto);
     }
 }
