@@ -35,6 +35,11 @@ public class TranslationService {
 
     private Boolean checkSupportedLanguage(String language) {
         // TODO only support en -> ko
-        return true;
+        if (language.equals("en")) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
