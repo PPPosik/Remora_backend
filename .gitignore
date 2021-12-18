@@ -61,4 +61,4 @@ out/
 .vscode/
 
 # configuration
-.env.*
+.env
