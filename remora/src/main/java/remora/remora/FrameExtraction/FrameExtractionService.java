@@ -16,7 +16,7 @@ public class FrameExtractionService {
         int frameInterval = 10;
         int threadSize = 8;
         ExtractionThread[] extractionThread = new ExtractionThread[threadSize];
-        boolean isRunning = true;
+        Boolean isRunning = true;
 
         response.success = false;
         response.frameSet = new ArrayList<PicturePair>();

@@ -33,7 +33,7 @@ public class TranslationService {
         return response;
     }
 
-    private boolean checkSupportedLanguage(String language) {
+    private Boolean checkSupportedLanguage(String language) {
         // TODO only support en -> ko
         return true;
     }

@@ -1,7 +1,7 @@
 package remora.remora.Translation.dto;
 
 public class TranslationResponseDto {
-    public boolean success;
+    public Boolean success;
     public String originText;
     public String translatedText;
 }
