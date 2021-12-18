@@ -37,8 +37,7 @@ public class TranslationService {
         // TODO only support en -> ko
         if (language.equals("en")) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
