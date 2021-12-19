@@ -13,6 +13,7 @@ import remora.remora.Api.ApiDTO.DeleteRequestDto;
 import remora.remora.Api.ApiDTO.SimpleResponseDto;
 import remora.remora.Api.ApiDTO.UploadRequestDto;
 import remora.remora.Api.ApiDTO.UploadResponseDto;
+import remora.remora.Classification.ClassificationController;
 import remora.remora.FrameExtraction.FrameExtractionController;
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
@@ -21,6 +22,7 @@ import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
 public class MainController {
     FrameExtractionController frameExtractionController = new FrameExtractionController();
     ApiController apiController = new ApiController();
+    ClassificationController classificationController = new ClassificationController();
 
     @GetMapping("/test/extraction")
     public void testExtraction() {
