@@ -9,20 +9,24 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Api.ApiController;
-import remora.remora.Api.ApiDTO.DeleteRequestDto;
-import remora.remora.Api.ApiDTO.SimpleResponseDto;
-import remora.remora.Api.ApiDTO.UploadRequestDto;
-import remora.remora.Api.ApiDTO.UploadResponseDto;
+import remora.remora.Api.dto.DeleteRequestDto;
+import remora.remora.Api.dto.SimpleResponseDto;
+import remora.remora.Api.dto.UploadRequestDto;
+import remora.remora.Api.dto.UploadResponseDto;
 import remora.remora.Classification.ClassificationController;
 import remora.remora.FrameExtraction.FrameExtractionController;
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
+import remora.remora.Ocr.OcrService;
+import remora.remora.Translation.TranslationController;
 
 @RestController
 public class MainController {
     FrameExtractionController frameExtractionController = new FrameExtractionController();
     ApiController apiController = new ApiController();
     ClassificationController classificationController = new ClassificationController();
+    TranslationController translationController = new TranslationController();
+    OcrService ocrService = new OcrService();
 
     @GetMapping("/test/extraction")
     public void testExtraction() {

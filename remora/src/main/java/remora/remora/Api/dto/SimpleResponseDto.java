@@ -1,4 +1,4 @@
-package remora.remora.Api.ApiDTO;
+package remora.remora.Api.dto;
 
 public class SimpleResponseDto {
     Boolean success;
