@@ -2,10 +2,10 @@ package remora.remora.Api;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import remora.remora.Api.ApiDTO.DeleteRequestDto;
-import remora.remora.Api.ApiDTO.SimpleResponseDto;
-import remora.remora.Api.ApiDTO.UploadRequestDto;
-import remora.remora.Api.ApiDTO.UploadResponseDto;
+import remora.remora.Api.dto.DeleteRequestDto;
+import remora.remora.Api.dto.SimpleResponseDto;
+import remora.remora.Api.dto.UploadRequestDto;
+import remora.remora.Api.dto.UploadResponseDto;
 
 import java.io.File;
 import java.io.IOException;
