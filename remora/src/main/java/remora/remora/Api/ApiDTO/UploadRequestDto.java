@@ -1,4 +1,4 @@
-package remora.remora.Api.dto;
+package remora.remora.Api.ApiDTO;
 
 import org.springframework.web.multipart.MultipartFile;
 
