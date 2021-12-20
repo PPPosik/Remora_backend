@@ -20,14 +20,30 @@ public class ApiController {
 
     private ApiService apiService = new ApiService();
 
+    /**
+     *
+     * @param uploadReqDto
+     * @return UploadResponseDto
+     * @throws IOException
+     */
     public UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) throws IOException {
         return apiService.uploadVideo(uploadReqDto);
     }
 
+    /**
+     *
+     * @param uploadReqDto
+     * @return SimpleResponseDto
+     */
     public SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto){
         return apiService.changeVideo(uploadReqDto);
     }
 
+    /**
+     *
+     * @param deleteReqDto
+     * @return SimpleResponseDto
+     */
     public SimpleResponseDto deleteVideo(DeleteRequestDto deleteReqDto){
         return apiService.deleteVideo(deleteReqDto);
     }
