@@ -26,7 +26,13 @@ public class MainController {
     FrameExtractionController frameExtractionController = new FrameExtractionController();
     TranslationController translationController = new TranslationController();
     ApiController apiController = new ApiController();
-
+    
+    /*
+        To do : 다음과 같은 OcrController 객체가 생성 되어야 함.
+         
+        OcrController ocrController = new OcrController();
+     */
+    
     @GetMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     UploadResponseDto uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
                                   @RequestParam("needTranslate") String needTranslate) throws IOException {
@@ -46,10 +52,12 @@ public class MainController {
     SimpleResponseDto deleteVideo(@RequestBody DeleteRequestDto deleteReqDto){
         return apiController.deleteVideo(deleteReqDto);
     }
-
+    
+    /*
+        To do : 프레임 추출 모듈을 호출할 때 참고할 코드이며, File path는 환경변수로 관리할 예정임.
+     */
     @GetMapping("/test/extraction")
     public void testExtraction() {
-        //FrameExtractionController frameExtractionController = new FrameExtractionController();
         FrameExtractionRequestDto request = new FrameExtractionRequestDto();
         FrameExtractionResponseDto response = null;
 
@@ -59,10 +67,12 @@ public class MainController {
             System.out.println("Success frame extraction");
         }
     }
-
+    
+    /*
+        To do : 번역 모듈을 호출할 때 참고할 코드임.
+     */
     @GetMapping("/test/translate")
     public void testTranslate() {
-        //TranslationController translationController = new TranslationController();
         TranslationRequestDto request = new TranslationRequestDto();
         TranslationResponseDto response = new TranslationResponseDto();
 

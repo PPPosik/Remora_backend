@@ -26,7 +26,7 @@ public class ApiService {
         }
 
         /*
-            To Do : Set UploadResponseDto!
+            To Do : Set UploadResponseDto
          */
 
         return uploadResDto;
@@ -35,7 +35,7 @@ public class ApiService {
     SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto){
         SimpleResponseDto simpleResDto = new SimpleResponseDto();
         /*
-            To do
+            To do : Video 변경 작업 처리.
          */
         return simpleResDto;
     }
@@ -43,7 +43,7 @@ public class ApiService {
     SimpleResponseDto deleteVideo(DeleteRequestDto deleteReqDto){
         SimpleResponseDto simpleResDto = new SimpleResponseDto();
         /*
-            To do
+            To do : 요청 시에 업로드한 비디오를 삭제하는 작업 처리.
          */
         return simpleResDto;
     }
