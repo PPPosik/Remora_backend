@@ -12,22 +12,21 @@ import java.io.IOException;
 
 @Service
 public class ApiService {
+    static int fileNumber = 1;
+
     UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) throws IOException {
         UploadResponseDto uploadResDto = new UploadResponseDto();
-        int fileNumber = 1;
 
         for(MultipartFile file : uploadReqDto.getVideoFiles()){
             String fileType = file.getContentType();
 
             if(fileType.contains("video") || fileType.contains("Video")){
-                File dest = new File(System.getenv("VIDEOPATH") + "/" + "req_video" + fileNumber++);
+                File dest = new File(System.getenv("VIDEOPATH") + "/" + "req_video" + fileNumber);
                 file.transferTo(dest);
             }
         }
-
-        /*
-            To Do : Set UploadResponseDto
-         */
+        uploadResDto.code = fileNumber++;
+        uploadResDto.needTranslation = uploadReqDto.getNeedTranslate();
 
         return uploadResDto;
     }

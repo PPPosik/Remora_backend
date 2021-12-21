@@ -44,9 +44,35 @@ public class MainController {
                                   @RequestParam("needTranslate") String needTranslate) throws IOException {
 
         Boolean trans = needTranslate.equals("true");
-        UploadRequestDto request = new UploadRequestDto(files, trans);
+        UploadRequestDto uploadReqDto = new UploadRequestDto(files, trans);
+        UploadResponseDto uploadResDto = new UploadResponseDto();
+        uploadResDto = apiController.uploadVideo(uploadReqDto);
 
-        return apiController.uploadVideo(request);
+        for(MultipartFile uploadVideo : uploadReqDto.getVideoFiles()){
+            FrameExtractionRequestDto frameExReqDto = new FrameExtractionRequestDto();
+            FrameExtractionResponseDto frameExResDto;
+
+            File target = new File(System.getenv("VIDEOPATH") + "/" + "req_video" + uploadResDto.code);
+            frameExReqDto.originVideo = target;
+            frameExResDto = extraction(frameExReqDto);
+
+            System.out.println(frameExResDto.success);
+        }
+
+
+        /*
+            To do : Ocr Service Call
+         */
+
+        /*
+            To do : Classification Service Call
+         */
+        /*
+        if(uploadResDto.needTranslation){
+            translate();
+        }
+        */
+        return uploadResDto;
     }
 
     @PutMapping("/upload")
@@ -62,23 +88,16 @@ public class MainController {
     /*
         To do : 프레임 추출 모듈을 호출할 때 참고할 코드이며, File path는 환경변수로 관리할 예정임.
      */
-    @GetMapping("/test/extraction")
-    public void testExtraction() {
-        FrameExtractionRequestDto request = new FrameExtractionRequestDto();
-        FrameExtractionResponseDto response = null;
 
-        request.originVideo = new File("C:\\testVideo3.mp4");
-        response = frameExtractionController.frameExtract(request);
-        if (response != null && response.success) {
-            System.out.println("Success frame extraction");
-        }
+    public FrameExtractionResponseDto extraction(FrameExtractionRequestDto frameExReqDto) {
+        return frameExtractionController.frameExtract(frameExReqDto);
     }
     
     /*
         To do : 번역 모듈을 호출할 때 참고할 코드임.
      */
     @GetMapping("/test/translate")
-    public void testTranslate() {
+    public void translate() {
         TranslationRequestDto request = new TranslationRequestDto();
         TranslationResponseDto response = new TranslationResponseDto();
 
