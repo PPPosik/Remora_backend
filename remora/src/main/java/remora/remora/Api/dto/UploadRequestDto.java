@@ -11,14 +11,14 @@ public class UploadRequestDto {
     /**
      * 원본 동영상 파일
      */
-    private List<MultipartFile> originVideo;
+    private MultipartFile originVideo;
     /**
      * 번역 희망 여부
      */
     private Boolean needTranslate;
 
-    public UploadRequestDto(List<MultipartFile> files, Boolean needTranslate) {
-        this.originVideo = files;
+    public UploadRequestDto(MultipartFile file, Boolean needTranslate) {
+        this.originVideo = file;
         this.needTranslate = needTranslate;
     }
 
@@ -26,7 +26,7 @@ public class UploadRequestDto {
         return this.needTranslate;
     }
 
-    public List<MultipartFile> getVideoFiles(){
+    public MultipartFile getVideoFile(){
         return this.originVideo;
     }
 }

@@ -17,14 +17,14 @@ public class ApiService {
     UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) throws IOException {
         UploadResponseDto uploadResDto = new UploadResponseDto();
 
-        for(MultipartFile file : uploadReqDto.getVideoFiles()){
-            String fileType = file.getContentType();
+        MultipartFile file = uploadReqDto.getVideoFile();
+        String fileType = file.getContentType();
 
-            if(fileType.contains("video") || fileType.contains("Video")){
-                File dest = new File(System.getenv("VIDEOPATH") + "req_video" + fileNumber);
-                file.transferTo(dest);
-            }
+        if(fileType.contains("video") || fileType.contains("Video")){
+            File dest = new File(System.getenv("VIDEOPATH") + "req_video" + fileNumber);
+            file.transferTo(dest);
         }
+
         uploadResDto.code = fileNumber++;
         uploadResDto.needTranslation = uploadReqDto.getNeedTranslate();
 

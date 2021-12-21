@@ -2,6 +2,7 @@ package remora.remora.MainControl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -40,39 +41,36 @@ public class MainController {
      */
     
     @GetMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    UploadResponseDto uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
-                                  @RequestParam("needTranslate") String needTranslate) throws IOException {
+    ArrayList<UploadResponseDto> uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
+                                             @RequestParam("needTranslate") List<String> needTranslate) throws IOException {
 
-        Boolean trans = needTranslate.equals("true");
-        UploadRequestDto uploadReqDto = new UploadRequestDto(files, trans);
-        UploadResponseDto uploadResDto = new UploadResponseDto();
-        uploadResDto = apiController.uploadVideo(uploadReqDto);
+        ArrayList<UploadResponseDto> uploadResDtos = new ArrayList<UploadResponseDto>();
 
-        for(MultipartFile uploadVideo : uploadReqDto.getVideoFiles()){
+        for(int i = 0; i < needTranslate.size(); i++) {
+            UploadRequestDto uploadReqDto = new UploadRequestDto(files.get(i), needTranslate.get(i).equals("true"));
+            uploadResDtos.add(apiController.uploadVideo(uploadReqDto));
+        }
+
+        for(UploadResponseDto uploadResDto : uploadResDtos){
             FrameExtractionRequestDto frameExReqDto = new FrameExtractionRequestDto();
-            FrameExtractionResponseDto frameExResDto;
+            frameExReqDto.originVideo = new File(System.getenv("VIDEOPATH") + "req_video" + uploadResDto.code);
+            FrameExtractionResponseDto frameExResDto = extraction(frameExReqDto);
+            System.out.println(uploadResDto.code + " : " + frameExResDto.success);
 
-            File target = new File(System.getenv("VIDEOPATH") + "/" + "req_video" + uploadResDto.code);
-            frameExReqDto.originVideo = target;
-            frameExResDto = extraction(frameExReqDto);
+            /*
+                To do : Ocr Service Call
+             */
 
-            System.out.println(frameExResDto.success);
+            /*
+                To do : Classification Service Call
+             */
+
+            /*
+                To do : Translate Service Call
+             */
         }
 
-
-        /*
-            To do : Ocr Service Call
-         */
-
-        /*
-            To do : Classification Service Call
-         */
-        /*
-        if(uploadResDto.needTranslation){
-            translate();
-        }
-        */
-        return uploadResDto;
+        return uploadResDtos;
     }
 
     @PutMapping("/upload")
