@@ -84,10 +84,6 @@ public class MainController {
     SimpleResponseDto deleteVideo(@RequestBody DeleteRequestDto deleteReqDto){
         return apiController.deleteVideo(deleteReqDto);
     }
-    
-    /*
-        To do : 프레임 추출 모듈을 호출할 때 참고할 코드이며, File path는 환경변수로 관리할 예정임.
-     */
 
     public FrameExtractionResponseDto extraction(FrameExtractionRequestDto frameExReqDto) {
         return frameExtractionController.frameExtract(frameExReqDto);

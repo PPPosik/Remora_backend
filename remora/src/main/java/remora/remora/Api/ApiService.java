@@ -21,7 +21,7 @@ public class ApiService {
             String fileType = file.getContentType();
 
             if(fileType.contains("video") || fileType.contains("Video")){
-                File dest = new File(System.getenv("VIDEOPATH") + "/" + "req_video" + fileNumber);
+                File dest = new File(System.getenv("VIDEOPATH") + "req_video" + fileNumber);
                 file.transferTo(dest);
             }
         }
