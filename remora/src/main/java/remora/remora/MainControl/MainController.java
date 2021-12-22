@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,7 +44,7 @@ public class MainController {
     @GetMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ArrayList<UploadResponseDto> uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
                                              @RequestParam("needTranslate") List<String> needTranslate) throws IOException {
-
+        Dotenv dotenv = Dotenv.configure().load();
         ArrayList<UploadResponseDto> uploadResDtos = new ArrayList<UploadResponseDto>();
 
         for(int i = 0; i < needTranslate.size(); i++) {
@@ -53,9 +54,9 @@ public class MainController {
 
         for(UploadResponseDto uploadResDto : uploadResDtos){
             FrameExtractionRequestDto frameExReqDto = new FrameExtractionRequestDto();
-            frameExReqDto.originVideo = new File(System.getenv("VIDEOPATH") + "req_video" + uploadResDto.code);
+            frameExReqDto.originVideo = new File(dotenv.get("VIDEO_PATH") + "req_video" + uploadResDto.code);
             FrameExtractionResponseDto frameExResDto = extraction(frameExReqDto);
-            System.out.println(uploadResDto.code + " : " + frameExResDto.success);
+
 
             /*
                 To do : Ocr Service Call
@@ -69,14 +70,14 @@ public class MainController {
                 To do : Translate Service Call
              */
         }
-        File path = new File(System.getenv("VIDEOPATH"));
+        File path = new File(dotenv.get("VIDEO_PATH"));
         File[] folder_list = path.listFiles();
 
         for(int j = 0; j < folder_list.length; j++) {
             folder_list[j].delete();
         }
 
-        path = new File(System.getenv("FRAMEPATH"));
+        path = new File(dotenv.get("FRAME_PATH"));
 
         folder_list = path.listFiles();
 

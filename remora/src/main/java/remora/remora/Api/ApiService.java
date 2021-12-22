@@ -1,5 +1,6 @@
 package remora.remora.Api;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Api.dto.DeleteRequestDto;
@@ -15,13 +16,14 @@ public class ApiService {
     static int fileNumber = 1;
 
     UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) throws IOException {
+        Dotenv dotenv = Dotenv.configure().load();
         UploadResponseDto uploadResDto = new UploadResponseDto();
 
         MultipartFile file = uploadReqDto.getVideoFile();
         String fileType = file.getContentType();
 
         if(fileType.contains("video") || fileType.contains("Video")){
-            File dest = new File(System.getenv("VIDEOPATH") + "req_video" + fileNumber);
+            File dest = new File(dotenv.get("VIDEO_PATH") + "req_video" + fileNumber);
             file.transferTo(dest);
         }
 
