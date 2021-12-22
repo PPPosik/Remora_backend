@@ -32,7 +32,7 @@ public class ApiController {
      * @param uploadReqDto
      * @return SimpleResponseDto
      */
-    public SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto){
+    public SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto) throws IOException {
         return apiService.changeVideo(uploadReqDto);
     }
 

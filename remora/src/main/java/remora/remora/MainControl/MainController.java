@@ -69,12 +69,28 @@ public class MainController {
                 To do : Translate Service Call
              */
         }
+        File path = new File(System.getenv("VIDEOPATH"));
+        File[] folder_list = path.listFiles();
+
+        for(int j = 0; j < folder_list.length; j++) {
+            folder_list[j].delete();
+        }
+
+        path = new File(System.getenv("FRAMEPATH"));
+
+        folder_list = path.listFiles();
+
+        for(int j = 0; j < folder_list.length; j++){
+            folder_list[j].delete();
+        }
+
 
         return uploadResDtos;
     }
 
+    /*
     @PutMapping("/upload")
-    SimpleResponseDto changeVideo(@RequestBody UploadRequestDto uploadReqDto){
+    SimpleResponseDto changeVideo(@RequestBody UploadRequestDto uploadReqDto) throws IOException {
         return apiController.changeVideo(uploadReqDto);
     }
 
@@ -82,6 +98,7 @@ public class MainController {
     SimpleResponseDto deleteVideo(@RequestBody DeleteRequestDto deleteReqDto){
         return apiController.deleteVideo(deleteReqDto);
     }
+    */
 
     public FrameExtractionResponseDto extraction(FrameExtractionRequestDto frameExReqDto) {
         return frameExtractionController.frameExtract(frameExReqDto);

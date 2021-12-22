@@ -31,19 +31,41 @@ public class ApiService {
         return uploadResDto;
     }
 
-    SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto){
+    SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto) throws IOException {
         SimpleResponseDto simpleResDto = new SimpleResponseDto();
         /*
-            To do : Video 변경 작업 처리.
-         */
+        simpleResDto.success = false;
+        simpleResDto.message = " ";
+        simpleResDto.code = 0;
+
+        MultipartFile file = uploadReqDto.getVideoFile();
+        String fileType = file.getContentType();
+
+        if(fileType.contains("video") || fileType.contains("Video")){
+            File dest = new File(System.getenv("VIDEOPATH") + "req_video" + fileNumber);
+            file.transferTo(dest);
+
+            simpleResDto.success = true;
+            simpleResDto.message = "Video Change Success";
+            simpleResDto.code = fileNumber++;
+        }
+        */
         return simpleResDto;
     }
 
     SimpleResponseDto deleteVideo(DeleteRequestDto deleteReqDto){
         SimpleResponseDto simpleResDto = new SimpleResponseDto();
         /*
-            To do : 요청 시에 업로드한 비디오를 삭제하는 작업 처리.
-         */
+        simpleResDto.success = false;
+        simpleResDto.message = " ";
+        simpleResDto.code = 0;
+
+        if(deleteReqDto.delete){
+            simpleResDto.success = true;
+            simpleResDto.code = --fileNumber;
+            simpleResDto.message = "Video Delete Success";
+        }
+        */
         return simpleResDto;
     }
 
