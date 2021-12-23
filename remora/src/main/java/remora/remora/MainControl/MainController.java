@@ -6,19 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Api.ApiController;
-import remora.remora.Api.dto.DeleteRequestDto;
-import remora.remora.Api.dto.SimpleResponseDto;
 import remora.remora.Api.dto.UploadRequestDto;
 import remora.remora.Api.dto.UploadResponseDto;
 import remora.remora.FrameExtraction.FrameExtractionController;
@@ -34,15 +30,17 @@ public class MainController {
     FrameExtractionController frameExtractionController = new FrameExtractionController();
     TranslationController translationController = new TranslationController();
     ApiController apiController = new ApiController();
-    
+
     /*
         To do : 다음과 같은 OcrController 객체가 생성 되어야 함.
          
         OcrController ocrController = new OcrController();
      */
-    
-    @GetMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ArrayList<UploadResponseDto> uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
+    @ApiOperation(value = "Main Controller Swagger", produces = "multipart/form-data")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ArrayList<UploadResponseDto> uploadVideo(@Parameter(description = "추출할 비디오", required = true, content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE))
+                                             @RequestPart("originVideo") List<MultipartFile> files,
+                                             @Parameter(description = "번역 희망 여부(true or false)", required = true)
                                              @RequestParam("needTranslate") List<String> needTranslate) throws IOException {
         Dotenv dotenv = Dotenv.configure().load();
         ArrayList<UploadResponseDto> uploadResDtos = new ArrayList<UploadResponseDto>();
@@ -70,45 +68,31 @@ public class MainController {
                 To do : Translate Service Call
              */
         }
+
         File path = new File(dotenv.get("VIDEO_PATH"));
         File[] folder_list = path.listFiles();
 
-        for(int j = 0; j < folder_list.length; j++) {
-            folder_list[j].delete();
+        for (File file : folder_list) {
+            file.delete();
         }
 
         path = new File(dotenv.get("FRAME_PATH"));
-
         folder_list = path.listFiles();
 
-        for(int j = 0; j < folder_list.length; j++){
-            folder_list[j].delete();
+        for (File file : folder_list) {
+            file.delete();
         }
-
 
         return uploadResDtos;
     }
-
-    /*
-    @PutMapping("/upload")
-    SimpleResponseDto changeVideo(@RequestBody UploadRequestDto uploadReqDto) throws IOException {
-        return apiController.changeVideo(uploadReqDto);
-    }
-
-    @DeleteMapping("/upload")
-    SimpleResponseDto deleteVideo(@RequestBody DeleteRequestDto deleteReqDto){
-        return apiController.deleteVideo(deleteReqDto);
-    }
-    */
 
     public FrameExtractionResponseDto extraction(FrameExtractionRequestDto frameExReqDto) {
         return frameExtractionController.frameExtract(frameExReqDto);
     }
     
     /*
-        To do : 번역 모듈을 호출할 때 참고할 코드임.
+        To do : 번역 모듈 호출
      */
-    @GetMapping("/test/translate")
     public void translate() {
         TranslationRequestDto request = new TranslationRequestDto();
         TranslationResponseDto response = new TranslationResponseDto();
