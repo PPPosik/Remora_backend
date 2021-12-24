@@ -70,16 +70,16 @@ public class MainController {
         }
 
         File path = new File(dotenv.get("VIDEO_PATH"));
-        File[] folder_list = path.listFiles();
+        File[] folderList = path.listFiles();
 
-        for (File file : folder_list) {
+        for (File file : folderList) {
             file.delete();
         }
 
         path = new File(dotenv.get("FRAME_PATH"));
-        folder_list = path.listFiles();
+        folderList = path.listFiles();
 
-        for (File file : folder_list) {
+        for (File file : folderList) {
             file.delete();
         }
 
