@@ -1,5 +1,6 @@
 package remora.remora.Api;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Api.dto.DeleteRequestDto;
@@ -12,39 +13,33 @@ import java.io.IOException;
 
 @Service
 public class ApiService {
+    static int fileNumber = 1;
+
     UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) throws IOException {
+        Dotenv dotenv = Dotenv.configure().load();
         UploadResponseDto uploadResDto = new UploadResponseDto();
-        int fileNumber = 1;
 
-        for(MultipartFile file : uploadReqDto.getVideoFiles()){
-            String fileType = file.getContentType();
+        MultipartFile file = uploadReqDto.getVideoFile();
+        String fileType = file.getContentType();
 
-            if(fileType.contains("video") || fileType.contains("Video")){
-                File dest = new File(System.getenv("VIDEOPATH") + "/" + "req_video" + fileNumber++);
-                file.transferTo(dest);
-            }
+        if(fileType.contains("video") || fileType.contains("Video")){
+            File dest = new File(dotenv.get("VIDEO_PATH") + "req_video" + fileNumber);
+            file.transferTo(dest);
         }
 
-        /*
-            To Do : Set UploadResponseDto
-         */
+        uploadResDto.code = fileNumber++;
+        uploadResDto.needTranslation = uploadReqDto.getNeedTranslate();
 
         return uploadResDto;
     }
 
-    SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto){
+    SimpleResponseDto changeVideo(UploadRequestDto uploadReqDto) throws IOException {
         SimpleResponseDto simpleResDto = new SimpleResponseDto();
-        /*
-            To do : Video 변경 작업 처리.
-         */
         return simpleResDto;
     }
 
     SimpleResponseDto deleteVideo(DeleteRequestDto deleteReqDto){
         SimpleResponseDto simpleResDto = new SimpleResponseDto();
-        /*
-            To do : 요청 시에 업로드한 비디오를 삭제하는 작업 처리.
-         */
         return simpleResDto;
     }
 
