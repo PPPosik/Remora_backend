@@ -13,7 +13,7 @@ import remora.remora.FrameExtraction.thread.ExtractionThread;
 public class FrameExtractionService {
     public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) throws InterruptedException {
         FrameExtractionResponseDto response = new FrameExtractionResponseDto();
-        int frameInterval = 10;
+        int frameInterval = 150;
         int threadSize = 8;
         ExtractionThread[] extractionThread = new ExtractionThread[threadSize];
         Boolean isRunning = true;
