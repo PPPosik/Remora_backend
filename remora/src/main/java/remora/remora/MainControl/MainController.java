@@ -38,8 +38,7 @@ public class MainController {
      */
     @ApiOperation(value = "Main Controller Swagger", produces = "multipart/form-data")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ArrayList<UploadResponseDto> uploadVideo(@Parameter(description = "추출할 비디오", required = true, content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE))
-                                             @RequestPart("originVideo") List<MultipartFile> files,
+    ArrayList<UploadResponseDto> uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
                                              @Parameter(description = "번역 희망 여부(true or false)", required = true)
                                              @RequestParam("needTranslate") List<String> needTranslate) throws IOException {
         Dotenv dotenv = Dotenv.configure().load();
