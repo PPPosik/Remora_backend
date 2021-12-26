@@ -20,7 +20,9 @@ import remora.remora.Api.dto.UploadResponseDto;
 import remora.remora.FrameExtraction.FrameExtractionController;
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
-
+import remora.remora.Ocr.OcrController;
+import remora.remora.Ocr.dto.OcrRequestDto;
+import remora.remora.Ocr.dto.OcrResponseDto;
 import remora.remora.Translation.TranslationController;
 import remora.remora.Translation.dto.TranslationRequestDto;
 import remora.remora.Translation.dto.TranslationResponseDto;
@@ -108,5 +110,15 @@ public class MainController {
             System.out.println("Success translation");
             System.out.println(response.translatedText);
         }
+    }
+
+    @GetMapping("/test/ocr")
+    public void testOcr() {
+        OcrController ocrController = new OcrController();
+        OcrRequestDto request = new OcrRequestDto();
+        request.frameSet = null;
+
+        OcrResponseDto response = ocrController.detection(request);
+        System.out.println("Ocr Response : " + response.originResultText);
     }
 }
