@@ -14,7 +14,7 @@ public class FrameExtractionService {
     public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) throws InterruptedException {
         FrameExtractionResponseDto response = new FrameExtractionResponseDto();
         int frameInterval = 150;
-        int threadSize = 8;
+        int threadSize = 2;
         ExtractionThread[] extractionThread = new ExtractionThread[threadSize];
         Boolean isRunning = true;
 
