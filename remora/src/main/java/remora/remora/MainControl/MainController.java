@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Api.ApiController;
 import remora.remora.Api.dto.UploadRequestDto;
 import remora.remora.Api.dto.UploadResponseDto;
+import remora.remora.Classification.ClassificationController;
+import remora.remora.Classification.dto.ClassificationRequestDto;
+import remora.remora.Classification.dto.ClassificationResponseDto;
 import remora.remora.FrameExtraction.FrameExtractionController;
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
@@ -118,5 +121,20 @@ public class MainController {
 
         OcrResponseDto response = ocrController.detection(request);
         System.out.println("Ocr Response : " + response.originResultText);
+    }
+
+    @GetMapping("/test/classification")
+    public void testClassification() {
+        ClassificationController classificationController = new ClassificationController();
+        ClassificationRequestDto request = new ClassificationRequestDto();
+        request.language = "en";
+        request.originResultText = "";
+        request.translatedResultText = "";
+
+        ClassificationResponseDto response = classificationController.classification(request);
+        System.out.println("Classification Response : ");
+        for (String keyword : response.keywords) {
+            System.out.println(keyword);
+        }
     }
 }
