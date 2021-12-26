@@ -28,6 +28,7 @@ import remora.remora.Translation.TranslationController;
 import remora.remora.Translation.dto.TranslationRequestDto;
 import remora.remora.Translation.dto.TranslationResponseDto;
 
+@CrossOrigin(origins = "https://remora-223.herokuapp.com")
 @RestController
 public class MainController {
     FrameExtractionController frameExtractionController = new FrameExtractionController();
