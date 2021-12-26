@@ -2,8 +2,6 @@ package remora.remora.Api.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 /**
  * 동영상을 업로드할 때 필요한 Object
  */
