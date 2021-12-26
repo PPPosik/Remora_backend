@@ -47,7 +47,7 @@ public class ExtractionThread extends Thread {
 
                     BufferedImage bufferedImage = AWTUtil.toBufferedImage(response.frameSet.get(response.frameSet.size() - 1).second());
                     ImageIO.write(bufferedImage, "png",
-                            new File(System.getenv("FRAMEPATH") + response.frameSet.get(response.frameSet.size() - 1).first() + ".png"));
+                            new File(System.getenv("FRAME_PATH") + response.frameSet.get(response.frameSet.size() - 1).first() + ".png"));
                     System.out.println("Write : " + response.frameSet.get(response.frameSet.size() - 1).first() + ".png");
                     }
                 }
