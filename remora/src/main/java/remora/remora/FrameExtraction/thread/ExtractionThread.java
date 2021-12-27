@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
@@ -20,6 +21,7 @@ public class ExtractionThread extends Thread {
     private int frameInterval;
     private FrameExtractionResponseDto response;
     File originVideo;
+    Dotenv dotenv = Dotenv.configure().load();
 
     public ExtractionThread(int threadNo, int threadSize, int frameInterval, FrameExtractionResponseDto response,
             File originVideo) {
@@ -47,7 +49,7 @@ public class ExtractionThread extends Thread {
 
                     BufferedImage bufferedImage = AWTUtil.toBufferedImage(response.frameSet.get(response.frameSet.size() - 1).second());
                     ImageIO.write(bufferedImage, "png",
-                            new File(System.getenv("FRAME_PATH") + response.frameSet.get(response.frameSet.size() - 1).first() + ".png"));
+                            new File(dotenv.get("FRAME_PATH") + response.frameSet.get(response.frameSet.size() - 1).first() + ".png"));
                     System.out.println("Write : " + response.frameSet.get(response.frameSet.size() - 1).first() + ".png");
                     }
                 }
