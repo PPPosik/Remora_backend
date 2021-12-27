@@ -76,6 +76,8 @@ public class MainController {
                 ClassificationResponseDto classResDto = classificationController.classification(classReqDto);
                 uploadResDto.keywords = classResDto.keywords;
 
+                uploadResDto.success = true;
+                uploadResDto.message = "Success!";
 
             }catch (Exception e) {
                 e.printStackTrace();

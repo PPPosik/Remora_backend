@@ -30,6 +30,7 @@ public class OcrService {
                     response.originResultText.append(str + "\n");
                 }
                 reader.close();
+                response.success = true;
             } catch (IOException e) {
                 e.printStackTrace();
                 return response;
