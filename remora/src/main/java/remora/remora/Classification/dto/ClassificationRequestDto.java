@@ -5,8 +5,8 @@ public class ClassificationRequestDto {
     public String translatedResultText;
     public String language;
 
-    public ClassificationRequestDto(String originResultText, String translatedResultText, String language){
-        this.originResultText = originResultText;
+    public ClassificationRequestDto(StringBuffer originResultText, String translatedResultText, String language){
+        this.originResultText = originResultText.toString();
         this.translatedResultText = translatedResultText;
         this.language = language;
     }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -62,13 +63,19 @@ public class MainController {
 
                 OcrRequestDto ocrReqDto = new OcrRequestDto(frameExResDto.frameSet);
                 OcrResponseDto ocrResDto = ocrController.detection(ocrReqDto);
-
+                uploadResDto.originResultText = Collections.singletonList(ocrResDto.originResultText.toString());
 
                 if(!ocrResDto.success)
                     throw new NullPointerException();
 
                 TranslationRequestDto transReqDto = new TranslationRequestDto(ocrResDto.originResultText, "en", uploadResDto.needTranslation);
                 TranslationResponseDto transResDto = translationController.translate(transReqDto);
+                uploadResDto.translatedResultText = Collections.singletonList(transResDto.translatedText);
+
+                ClassificationRequestDto classReqDto = new ClassificationRequestDto(ocrResDto.originResultText, transResDto.translatedText, "en");
+                ClassificationResponseDto classResDto = classificationController.classification(classReqDto);
+                uploadResDto.keywords = classResDto.keywords;
+
 
             }catch (Exception e) {
                 e.printStackTrace();
@@ -95,43 +102,5 @@ public class MainController {
         }
 
         return uploadResDtos;
-    }
-
-    /*
-        To do : 번역 모듈 호출
-     */
-    public void translate() {
-        TranslationRequestDto request = new TranslationRequestDto();
-        TranslationResponseDto response = new TranslationResponseDto();
-
-        request.language = "en";
-        request.needTranslation = true;
-        request.originText = "Java is a general-purpose, class-based, object-oriented programming language designed for having lesser implementation dependencies. It is a computing platform for application development. Java is fast, secure, and reliable, therefore. It is widely used for developing Java applications in laptops, data centers, game consoles, scientific supercomputers, cell phones, etc.";
-
-        if (request.needTranslation) {
-            response = translationController.translate(request);
-        }
-
-        if (response != null && response.success) {
-            System.out.println("Success translation");
-            System.out.println(response.translatedText);
-        }
-    }
-
-
-
-    @GetMapping("/test/classification")
-    public void testClassification() {
-
-        ClassificationRequestDto request = new ClassificationRequestDto();
-        request.language = "en";
-        request.originResultText = "";
-        request.translatedResultText = "";
-
-        ClassificationResponseDto response = classificationController.classification(request);
-        System.out.println("Classification Response : ");
-        for (String keyword : response.keywords) {
-            System.out.println(keyword);
-        }
     }
 }
