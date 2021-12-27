@@ -31,15 +31,6 @@ public class ApiService {
         uploadResDto.code = fileNumber++;
         uploadResDto.needTranslation = uploadReqDto.getNeedTranslate();
 
-        /*
-             dummy data insert
-         */
-        uploadResDto.keywords = Arrays.asList("Hello", "World");
-        uploadResDto.originResultText = Arrays.asList("Good", "Day");
-        uploadResDto.translatedResultText = Arrays.asList("Remora", "is Good");
-        uploadResDto.message = "Remora Project";
-        uploadResDto.success = true;
-
         return uploadResDto;
     }
 

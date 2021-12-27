@@ -3,6 +3,7 @@ package remora.remora.MainControl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -28,23 +29,20 @@ import remora.remora.Translation.TranslationController;
 import remora.remora.Translation.dto.TranslationRequestDto;
 import remora.remora.Translation.dto.TranslationResponseDto;
 
-@CrossOrigin(origins = "https://remora-223.herokuapp.com")
+@CrossOrigin(origins = "https://remora-223.herokuapp.com, http://remora-223.herokuapp.com")
 @RestController
 public class MainController {
     FrameExtractionController frameExtractionController = new FrameExtractionController();
     TranslationController translationController = new TranslationController();
     ApiController apiController = new ApiController();
+    OcrController ocrController = new OcrController();
+    ClassificationController classificationController = new ClassificationController();
 
-    /*
-        To do : 다음과 같은 OcrController 객체가 생성 되어야 함.
-         
-        OcrController ocrController = new OcrController();
-     */
     @ApiOperation(value = "Main Controller Swagger", produces = "multipart/form-data")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ArrayList<UploadResponseDto> uploadVideo(@RequestParam("originVideo") List<MultipartFile> files,
                                              @Parameter(description = "번역 희망 여부(true or false)", required = true)
-                                             @RequestParam("needTranslate") List<String> needTranslate) throws IOException {
+                                             @RequestParam("needTranslate") List<String> needTranslate) throws IOException, NullPointerException {
         Dotenv dotenv = Dotenv.configure().load();
         ArrayList<UploadResponseDto> uploadResDtos = new ArrayList<UploadResponseDto>();
 
@@ -54,22 +52,32 @@ public class MainController {
         }
 
         for(UploadResponseDto uploadResDto : uploadResDtos){
-            FrameExtractionRequestDto frameExReqDto = new FrameExtractionRequestDto();
-            frameExReqDto.originVideo = new File(dotenv.get("VIDEO_PATH") + "req_video" + uploadResDto.code);
-            FrameExtractionResponseDto frameExResDto = extraction(frameExReqDto);
+            FrameExtractionRequestDto frameExReqDto = new FrameExtractionRequestDto(new File(dotenv.get("VIDEO_PATH") + "req_video" + uploadResDto.code));
+
+            try{
+                FrameExtractionResponseDto frameExResDto = frameExtractionController.frameExtract(frameExReqDto);
+
+                if(!frameExResDto.success)
+                    throw new NullPointerException();
+
+                OcrRequestDto ocrReqDto = new OcrRequestDto(frameExResDto.frameSet);
+                OcrResponseDto ocrResDto = ocrController.detection(ocrReqDto);
 
 
-            /*
-                To do : Ocr Service Call
-             */
+                if(!ocrResDto.success)
+                    throw new NullPointerException();
 
-            /*
-                To do : Classification Service Call
-             */
+                TranslationRequestDto transReqDto = new TranslationRequestDto(ocrResDto.originResultText, "en", uploadResDto.needTranslation);
+                TranslationResponseDto transResDto = translationController.translate(transReqDto);
 
-            /*
-                To do : Translate Service Call
-             */
+            }catch (Exception e) {
+                e.printStackTrace();
+                uploadResDto.message = "Fail!";
+                uploadResDto.keywords = Arrays.asList();
+                uploadResDto.originResultText = Arrays.asList();
+                uploadResDto.translatedResultText = Arrays.asList();
+                uploadResDto.success = false;
+            }
         }
 
         File path = new File(dotenv.get("VIDEO_PATH"));
@@ -89,10 +97,6 @@ public class MainController {
         return uploadResDtos;
     }
 
-    public FrameExtractionResponseDto extraction(FrameExtractionRequestDto frameExReqDto) {
-        return frameExtractionController.frameExtract(frameExReqDto);
-    }
-    
     /*
         To do : 번역 모듈 호출
      */
@@ -114,19 +118,11 @@ public class MainController {
         }
     }
 
-    @GetMapping("/test/ocr")
-    public void testOcr() {
-        OcrController ocrController = new OcrController();
-        OcrRequestDto request = new OcrRequestDto();
-        request.frameSet = null;
 
-        OcrResponseDto response = ocrController.detection(request);
-        System.out.println("Ocr Response : " + response.originResultText);
-    }
 
     @GetMapping("/test/classification")
     public void testClassification() {
-        ClassificationController classificationController = new ClassificationController();
+
         ClassificationRequestDto request = new ClassificationRequestDto();
         request.language = "en";
         request.originResultText = "";

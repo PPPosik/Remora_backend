@@ -14,8 +14,15 @@ public class TranslationService {
     public TranslationResponseDto translate(TranslationRequestDto request) throws Exception {
         TranslationResponseDto response = new TranslationResponseDto();
         response.originText = request.originText;
+
+        if(!request.needTranslation){
+            response.success = false;
+            response.translatedText = " ";
+            return response;
+        }
+
         response.success = false;
-        response.translatedText = null;
+        response.translatedText = " ";
 
         if (!this.checkSupportedLanguage(request.language)) {
             throw new Exception("Cannot translate language " + request.language);

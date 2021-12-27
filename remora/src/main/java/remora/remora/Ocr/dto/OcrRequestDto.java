@@ -6,4 +6,8 @@ import remora.remora.Common.PicturePair;
 
 public class OcrRequestDto {
     public ArrayList<PicturePair> frameSet;
+
+    public OcrRequestDto(ArrayList<PicturePair> frameSet){
+        this.frameSet = frameSet;
+    }
 }
