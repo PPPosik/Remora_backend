@@ -1,11 +1,7 @@
 package remora.remora.FrameExtraction.dto;
 
-import java.io.File;
+import java.util.List;
 
 public class FrameExtractionRequestDto {
-    public File originVideo;
-
-    public FrameExtractionRequestDto(File originVideo){
-        this.originVideo = originVideo;
-    }
+    public List<String> videoPath;
 }

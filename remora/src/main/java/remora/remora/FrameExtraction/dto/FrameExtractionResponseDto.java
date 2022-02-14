@@ -6,5 +6,6 @@ import remora.remora.Common.PicturePair;
 
 public class FrameExtractionResponseDto {
     public Boolean success;
-    public ArrayList<PicturePair> frameSet;
+    public String message;
+    public ArrayList<ArrayList<PicturePair>> frameSet;
 }
