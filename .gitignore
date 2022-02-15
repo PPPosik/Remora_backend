@@ -62,3 +62,7 @@ out/
 
 # configuration
 .env
+
+### test data ###
+*.png
+*.mp4
