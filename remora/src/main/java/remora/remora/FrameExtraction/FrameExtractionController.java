@@ -1,5 +1,9 @@
 package remora.remora.FrameExtraction;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
@@ -7,14 +11,33 @@ import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
 
 @RestController
 public class FrameExtractionController {
-    FrameExtractionService frameExtractionService = new FrameExtractionService();
+    private final FrameExtractionService frameExtractionService;
 
-    public FrameExtractionResponseDto frameExtract(FrameExtractionRequestDto request) {
+    @Autowired
+    public FrameExtractionController(FrameExtractionService frameExtractionService) {
+        this.frameExtractionService = frameExtractionService;
+    }
+
+    @GetMapping("/frames")
+    @ResponseBody
+    public FrameExtractionResponseDto frameExtract(@RequestBody FrameExtractionRequestDto request) {
+        FrameExtractionResponseDto response = new FrameExtractionResponseDto();
+
         try {
-            return frameExtractionService.frameExtract(request);
-        } catch (InterruptedException e) {
+            for (String path : request.videoPath) {
+                response.frameSet.add(frameExtractionService.frameExtract(path));
+            }
+
+            response.success = true;
+            response.message = "success";
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
+
+            response.success = false;
+            response.message = e.toString();
+            response.frameSet = null;
         }
+
+        return response;
     }
 }
