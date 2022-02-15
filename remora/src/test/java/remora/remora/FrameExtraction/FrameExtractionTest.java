@@ -1,0 +1,43 @@
+package remora.remora.FrameExtraction;
+
+import io.github.cdimascio.dotenv.Dotenv;
+import org.jcodec.api.FrameGrab;
+import org.jcodec.common.io.NIOUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class FrameExtractionTest {
+    private static final Dotenv dotenv = Dotenv.configure().load();
+    FrameExtractionService frameExtractionService;
+
+    @BeforeEach
+    public void beforeEach() {
+        frameExtractionService = new FrameExtractionService();
+    }
+
+    @AfterEach
+    public void afterEach() {
+    }
+
+    @Test
+    public void frameExtract() {
+        try {
+            FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(dotenv.get("VIDEO_PATH") + "1.mp4")));
+            int totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
+
+            ArrayList<Integer> result = frameExtractionService.frameExtract("1");
+
+            assertThat(result.size()).isEqualTo(totalFrames / frameExtractionService.getFrameInterval());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+}
