@@ -30,14 +30,14 @@ public class FrameExtractionController {
 
             response.success = true;
             response.message = "success";
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             response.success = false;
             response.message = e.toString();
             response.frameSet = null;
-        } finally {
-            return response;
         }
+
+        return response;
     }
 }
