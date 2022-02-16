@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FrameExtractionTest {
-    private static final Dotenv dotenv = Dotenv.configure().load();
+    private static final Dotenv dotenv = Dotenv.load();
     FrameExtractionService frameExtractionService;
 
     @BeforeEach
@@ -30,11 +30,10 @@ public class FrameExtractionTest {
     public void frameExtract() {
         try {
             FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(dotenv.get("VIDEO_PATH") + "1.mp4")));
-            int totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
+            double totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
 
             ArrayList<Integer> result = frameExtractionService.frameExtract("1");
-
-            assertThat(result.size()).isEqualTo(totalFrames / frameExtractionService.getFrameInterval());
+            assertThat(result.size()).isEqualTo((int) Math.ceil(totalFrames / frameExtractionService.getFrameInterval()));
         } catch (Exception e) {
             e.printStackTrace();
             fail();
