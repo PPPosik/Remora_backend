@@ -24,6 +24,11 @@ public class FrameExtractionTest {
 
     @AfterEach
     public void afterEach() {
+        File[] files = new File(dotenv.get("FRAME_PATH")).listFiles();
+
+        for (File file : files) {
+            file.delete();
+        }
     }
 
     @Test
