@@ -8,9 +8,10 @@ import remora.remora.FrameExtraction.thread.ExtractionThread;
 
 @Service
 public class FrameExtractionService {
+    private static final int threadSize = 2;
+    private static final int frameInterval = 150;
+
     public ArrayList<Integer> frameExtract(String path) throws Exception {
-        int threadSize = 2;
-        int frameInterval = 150;
         ArrayList<Integer> ret = new ArrayList<>();
         ExtractionThread[] extractionThread = new ExtractionThread[threadSize];
 
@@ -24,5 +25,9 @@ public class FrameExtractionService {
         }
 
         return ret;
+    }
+
+    public int getFrameInterval() {
+        return frameInterval;
     }
 }
