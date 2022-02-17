@@ -54,6 +54,7 @@ public class ExtractionThread extends Thread {
                 }
             }
         } catch (IOException | JCodecException e) {
+            frameSet.clear();
             e.printStackTrace();
         }
     }
