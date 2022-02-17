@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FrameExtractionTest {
@@ -26,8 +27,10 @@ public class FrameExtractionTest {
     public void afterEach() {
         File[] files = new File(dotenv.get("FRAME_PATH")).listFiles();
 
-        for (File file : files) {
-            file.delete();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
         }
     }
 
@@ -47,10 +50,6 @@ public class FrameExtractionTest {
 
     @Test
     public void frameExtractVideoNotFound() {
-        try {
-            frameExtractionService.frameExtract("-1");
-        } catch (Exception e) {
-            assertThat(e.getMessage()).isEqualTo("Video Not Found");
-        }
+        assertThrows(Exception.class, () -> frameExtractionService.frameExtract("-1"));
     }
 }
