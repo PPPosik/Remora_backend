@@ -19,7 +19,9 @@ public class UploadService {
 
         MultipartFile file = uploadReqDto.getVideoFile();
         String fileType = file.getContentType();
-
+        /*
+            ToDo : 프레임 추출 API 호출을 위한 값을 반환해야 함.
+         */
         try {
             if (fileType.contains("video") || fileType.contains("Video")) {
                 File dest = new File(dotenv.get("VIDEO_PATH") + "req_video" + fileNumber);
