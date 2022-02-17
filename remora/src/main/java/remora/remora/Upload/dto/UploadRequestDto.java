@@ -1,4 +1,4 @@
-package remora.remora.Api.dto;
+package remora.remora.Upload.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,14 +13,14 @@ public class UploadRequestDto {
     /**
      * 번역 희망 여부
      */
-    private Boolean needTranslate;
+    private boolean needTranslate;
 
     public UploadRequestDto(MultipartFile file, Boolean needTranslate) {
         this.originVideo = file;
         this.needTranslate = needTranslate;
     }
 
-    public Boolean getNeedTranslate(){
+    public boolean getNeedTranslate(){
         return this.needTranslate;
     }
 
