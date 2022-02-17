@@ -44,4 +44,13 @@ public class FrameExtractionTest {
             fail();
         }
     }
+
+    @Test
+    public void frameExtractVideoNotFound() {
+        try {
+            frameExtractionService.frameExtract("-1");
+        } catch (Exception e) {
+            assertThat(e.getMessage()).isEqualTo("Video Not Found");
+        }
+    }
 }
