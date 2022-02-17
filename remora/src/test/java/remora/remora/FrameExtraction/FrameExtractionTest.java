@@ -29,7 +29,9 @@ public class FrameExtractionTest {
 
         if (files != null) {
             for (File file : files) {
-                file.delete();
+                if (!file.getName().equals(".gitkeep")) {
+                    file.delete();
+                }
             }
         }
     }
