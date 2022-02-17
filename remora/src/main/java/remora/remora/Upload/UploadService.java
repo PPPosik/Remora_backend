@@ -13,7 +13,7 @@ import java.io.IOException;
 public class UploadService {
     static int fileNumber = 1;
 
-    UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) throws IOException {
+    UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto){
         Dotenv dotenv = Dotenv.configure().load();
         UploadResponseDto uploadResDto = new UploadResponseDto();
 
@@ -43,4 +43,4 @@ public class UploadService {
 
         return uploadResDto;
     }
-}
+}g
