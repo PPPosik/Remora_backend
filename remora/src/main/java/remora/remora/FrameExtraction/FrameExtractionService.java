@@ -23,6 +23,9 @@ public class FrameExtractionService {
             thread.join();
         }
 
+        if(ret.size() == 0) {
+            throw new Exception("Video Not Found");
+        }
         return ret;
     }
 }
