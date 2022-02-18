@@ -16,7 +16,7 @@ import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
 
 public class ExtractionThread extends Thread {
-    private static final Dotenv dotenv = Dotenv.configure().load();
+    private static final Dotenv dotenv = Dotenv.configure().directory("remora").load();
 
     private final int threadNo;
     private final int threadSize;
