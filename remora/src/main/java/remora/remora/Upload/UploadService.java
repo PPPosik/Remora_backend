@@ -7,13 +7,12 @@ import remora.remora.Upload.dto.UploadRequestDto;
 import remora.remora.Upload.dto.UploadResponseDto;
 
 import java.io.File;
-import java.io.IOException;
 
 @Service
 public class UploadService {
     static int fileNumber = 1;
 
-    UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto){
+    UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) {
         Dotenv dotenv = Dotenv.configure().load();
         UploadResponseDto uploadResDto = new UploadResponseDto();
 
@@ -32,7 +31,7 @@ public class UploadService {
                 uploadResDto.setNeedTranslation(uploadReqDto.getNeedTranslate());
                 uploadResDto.setCode(fileNumber);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
             uploadResDto.setMessage(e.getMessage());
@@ -43,4 +42,4 @@ public class UploadService {
 
         return uploadResDto;
     }
-}g
+}
