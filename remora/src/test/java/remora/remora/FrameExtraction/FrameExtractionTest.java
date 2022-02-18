@@ -1,11 +1,12 @@
 package remora.remora.FrameExtraction;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.common.io.NIOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,8 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@SpringBootTest
 public class FrameExtractionTest {
-    private static final Dotenv dotenv = Dotenv.load();
+    @Value("${video-path}")
+    String videoPath;
+    @Value("${frame-path}")
+    String framePath;
+
     FrameExtractionService frameExtractionService;
 
     @BeforeEach
@@ -25,7 +31,7 @@ public class FrameExtractionTest {
 
     @AfterEach
     public void afterEach() {
-        File[] files = new File(dotenv.get("FRAME_PATH")).listFiles();
+        File[] files = new File(framePath).listFiles();
 
         if (files != null) {
             for (File file : files) {
@@ -39,7 +45,7 @@ public class FrameExtractionTest {
     @Test
     public void frameExtract() {
         try {
-            FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(dotenv.get("VIDEO_PATH") + "1.mp4")));
+            FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(videoPath + "1.mp4")));
             double totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
 
             ArrayList<Integer> result = frameExtractionService.frameExtract("1");

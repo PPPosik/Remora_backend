@@ -2,12 +2,18 @@ package remora.remora.FrameExtraction;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import remora.remora.FrameExtraction.thread.ExtractionThread;
 
 @Service
 public class FrameExtractionService {
+    @Value("${video-path}")
+    String videoPath;
+    @Value("${frame-path}")
+    String framePath;
+
     private static final int threadSize = 2;
     private static final int frameInterval = 150;
 
@@ -16,7 +22,7 @@ public class FrameExtractionService {
         ExtractionThread[] extractionThread = new ExtractionThread[threadSize];
 
         for (int i = 0; i < threadSize; i++) {
-            extractionThread[i] = new ExtractionThread(i, threadSize, frameInterval, ret, path);
+            extractionThread[i] = new ExtractionThread(i, threadSize, frameInterval, videoPath, framePath, ret, path);
             extractionThread[i].start();
         }
 
@@ -24,7 +30,7 @@ public class FrameExtractionService {
             thread.join();
         }
 
-        if(ret.size() == 0) {
+        if (ret.size() == 0) {
             throw new Exception("Video Not Found");
         }
         return ret;

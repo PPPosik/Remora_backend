@@ -5,25 +5,29 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import remora.remora.Classification.dto.ClassificationRequestDto;
 import remora.remora.Classification.dto.ClassificationResponseDto;
 import remora.remora.Common.Cli;
 
 @Service
 public class ClassificationService {
+    @Value("${classification-module-path}")
+    String classificationModulePath;
+    @Value("${classification-result-path}")
+    String classificationResultPath;
+
     public ClassificationResponseDto classification(ClassificationRequestDto request) {
-        Dotenv dotenv = Dotenv.configure().load();
         ClassificationResponseDto response = new ClassificationResponseDto();
         response.success = false;
         response.keywords = new ArrayList<String>();
 
-        final Boolean success = Cli.exec(dotenv.get("RUN_CLASSIFICATION"), "");
+        final Boolean success = Cli.exec(classificationModulePath, "");
         if (success) {
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(dotenv.get("CLASSIFICATION_RESULT_PATH")));
+                BufferedReader reader = new BufferedReader(new FileReader(classificationResultPath));
 
                 String str;
                 while ((str = reader.readLine()) != null) {

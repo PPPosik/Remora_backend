@@ -1,5 +1,7 @@
 package remora.remora.Adapter;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -11,17 +13,14 @@ import java.net.URLEncoder;
 import java.net.MalformedURLException;
 import java.util.Map;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 import java.util.HashMap;
 import java.io.InputStream;
 
 public class Papago {
-    public static String call(String originText) {
-        Dotenv dotenv = Dotenv.configure().load();
-        String clientId = dotenv.get("PAPAGO_ID");
-        String clientSecret = dotenv.get("PAPAGO_PW");
+    private static String clientId;
+    private static String clientSecret;
 
+    public static String call(String originText) {
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
         try {
@@ -94,5 +93,15 @@ public class Papago {
         } catch (IOException e) {
             throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
         }
+    }
+
+    @Value("${papago.id}")
+    public static void setClientId(String clientId) {
+        Papago.clientId = clientId;
+    }
+
+    @Value("${papago.pw}")
+    public static void setClientSecret(String clientSecret) {
+        Papago.clientSecret = clientSecret;
     }
 }
