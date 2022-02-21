@@ -53,6 +53,8 @@ public class OcrTest {
         frameSet.add(3750);
 
         try {
+            String result = ocrService.detection(frameSet, videoCode);
+
             StringBuilder expectedStr = new StringBuilder();
             BufferedReader reader = new BufferedReader(new FileReader(ocrResultPath));
             String str;
@@ -61,8 +63,6 @@ public class OcrTest {
                 expectedStr.append(str + "\n");
             }
             reader.close();
-
-            String result = ocrService.detection(frameSet, videoCode);
 
             assertThat(result).isEqualTo(expectedStr.toString());
         } catch (Exception e) {
