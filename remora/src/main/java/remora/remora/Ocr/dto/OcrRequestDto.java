@@ -1,11 +1,14 @@
 package remora.remora.Ocr.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OcrRequestDto {
-    public ArrayList<Integer> frameSet;
+    public ArrayList<ArrayList<Integer>> frameSet;
+    public List<String> videoCode;
 
-    public OcrRequestDto(ArrayList<Integer> frameSet){
-        this.frameSet = frameSet;
+    public OcrRequestDto(){
+        this.frameSet = new ArrayList<>();
+        this.videoCode = new ArrayList<>();
     }
 }
