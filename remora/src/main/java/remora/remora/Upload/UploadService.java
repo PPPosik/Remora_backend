@@ -1,6 +1,6 @@
 package remora.remora.Upload;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Upload.dto.UploadRequestDto;
@@ -10,10 +10,12 @@ import java.io.File;
 
 @Service
 public class UploadService {
-    static int fileNumber = 1;
+    @Value("${video-path}")
+    String videoPath;
+
+    private static int fileNumber = 1;
 
     UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) {
-        Dotenv dotenv = Dotenv.configure().load();
         UploadResponseDto uploadResDto = new UploadResponseDto();
 
         MultipartFile file = uploadReqDto.getVideoFile();
@@ -23,7 +25,7 @@ public class UploadService {
          */
         try {
             if (fileType.contains("video") || fileType.contains("Video")) {
-                File dest = new File(dotenv.get("VIDEO_PATH") + "req_video" + fileNumber);
+                File dest = new File(videoPath + "req_video" + fileNumber);
                 file.transferTo(dest);
 
                 uploadResDto.setSuccess(true);

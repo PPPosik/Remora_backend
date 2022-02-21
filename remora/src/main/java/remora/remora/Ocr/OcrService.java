@@ -4,25 +4,29 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import remora.remora.Common.Cli;
 import remora.remora.Ocr.dto.OcrRequestDto;
 import remora.remora.Ocr.dto.OcrResponseDto;
 
 @Service
 public class OcrService {
+    @Value("${ocr-module-path}")
+    String ocrModulePath;
+    @Value("${ocr-result-path}")
+    String ocrResultPath;
+
     public OcrResponseDto detection(OcrRequestDto request) {
-        Dotenv dotenv = Dotenv.configure().load();
         OcrResponseDto response = new OcrResponseDto();
         response.success = false;
         response.originResultText = new StringBuffer();
 
-        final Boolean success = Cli.exec(dotenv.get("RUN_OCR"), "");
+        final Boolean success = Cli.exec(ocrModulePath, "");
         if (success) {
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(dotenv.get("OCR_RESULT_PATH")));
+                BufferedReader reader = new BufferedReader(new FileReader(ocrResultPath));
 
                 String str;
                 while ((str = reader.readLine()) != null) {
