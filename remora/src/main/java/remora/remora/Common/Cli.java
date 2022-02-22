@@ -8,10 +8,7 @@ public class Cli {
             Process process = Runtime.getRuntime().exec(String.format(command, args));
             process.waitFor();
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
