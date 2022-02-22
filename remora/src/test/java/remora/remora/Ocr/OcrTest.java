@@ -1,5 +1,7 @@
 package remora.remora.Ocr;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,20 +12,28 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 public class OcrTest {
+    @Value("${frame-path}")
+    String framePath;
+    @Value("${ocr-module-path}")
+    String ocrModulePath;
     @Value("${ocr-result-path}")
     String ocrResultPath;
 
     @Autowired
     OcrService ocrService;
 
-    @Test
-    public void ocr() {
-        ArrayList<Integer> frameSet = new ArrayList<>();
-        String videoCode = "1";
+    private ArrayList<Integer> frameSet;
+    private String videoCode;
+
+    @BeforeEach
+    public void init() {
+        frameSet = new ArrayList<>();
+        videoCode = "1";
 
         frameSet.add(0);
         frameSet.add(150);
@@ -51,7 +61,16 @@ public class OcrTest {
         frameSet.add(3450);
         frameSet.add(3600);
         frameSet.add(3750);
+    }
 
+    @AfterEach
+    public void resetEnv() {
+        ocrService.ocrModulePath = this.ocrModulePath;
+        ocrService.ocrResultPath = this.ocrResultPath;
+    }
+
+    @Test
+    public void ocrSuccess() {
         try {
             String result = ocrService.detection(frameSet, videoCode);
 
@@ -69,5 +88,17 @@ public class OcrTest {
             e.printStackTrace();
             fail();
         }
+    }
+
+    @Test
+    public void ocrFail() {
+        ocrService.ocrModulePath = null;
+        assertThrows(Exception.class, () -> ocrService.detection(frameSet, videoCode));
+    }
+
+    @Test
+    public void noText() {
+        ocrService.ocrResultPath = framePath + ".gitkeep";
+        assertThrows(Exception.class, () -> ocrService.detection(frameSet, videoCode));
     }
 }
