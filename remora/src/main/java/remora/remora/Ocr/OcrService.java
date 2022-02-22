@@ -35,7 +35,13 @@ public class OcrService {
             }
             reader.close();
         } else {
+            System.out.println("Run OCR module error");
             throw new Exception("Run OCR module error");
+        }
+
+        if (ret.length() == 0) {
+            System.out.println("There is no text in video");
+            throw new Exception("There is no text in video");
         }
 
         return ret.toString();
