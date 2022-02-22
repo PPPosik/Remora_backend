@@ -24,18 +24,20 @@ public class FrameExtractionController {
         FrameExtractionResponseDto response = new FrameExtractionResponseDto();
 
         try {
-            for (String path : request.videoPath) {
+            for (String path : request.videoCode) {
                 response.frameSet.add(frameExtractionService.frameExtract(path));
             }
 
             response.success = true;
             response.message = "success";
+            response.videoCode = request.videoCode;
         } catch (Exception e) {
             e.printStackTrace();
 
             response.success = false;
             response.message = e.toString();
             response.frameSet = null;
+            response.videoCode = null;
         }
 
         return response;
