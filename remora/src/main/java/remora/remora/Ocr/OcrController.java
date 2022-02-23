@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import remora.remora.Ocr.dto.OcrRequestDto;
 import remora.remora.Ocr.dto.OcrResponseDto;
 
+import javax.validation.Valid;
+
 @RestController
 public class OcrController {
     private final OcrService ocrService;
@@ -20,7 +22,7 @@ public class OcrController {
 
     @GetMapping("/text")
     @ResponseBody
-    public OcrResponseDto detection(@RequestBody OcrRequestDto request) {
+    public OcrResponseDto detection(@RequestBody @Valid OcrRequestDto request) {
         OcrResponseDto response = new OcrResponseDto();
 
         try {

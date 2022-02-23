@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
 
+import javax.validation.Valid;
+
 @RestController
 public class FrameExtractionController {
     private final FrameExtractionService frameExtractionService;
@@ -20,7 +22,7 @@ public class FrameExtractionController {
 
     @GetMapping("/frames")
     @ResponseBody
-    public FrameExtractionResponseDto frameExtract(@RequestBody FrameExtractionRequestDto request) {
+    public FrameExtractionResponseDto frameExtract(@RequestBody @Valid FrameExtractionRequestDto request) {
         FrameExtractionResponseDto response = new FrameExtractionResponseDto();
 
         try {
