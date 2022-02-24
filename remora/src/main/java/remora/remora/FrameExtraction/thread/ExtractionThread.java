@@ -13,6 +13,8 @@ import org.jcodec.api.JCodecException;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExtractionThread extends Thread {
     private final int threadNo;
@@ -22,6 +24,7 @@ public class ExtractionThread extends Thread {
     private final String framePath;
     private final ArrayList<Integer> frameSet;
     private final String path;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     public ExtractionThread(int threadNo, int threadSize, int frameInterval, String videoPath, String framePath, ArrayList<Integer> frameSet, String path) {
         this.threadNo = threadNo;
@@ -38,7 +41,7 @@ public class ExtractionThread extends Thread {
             FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(videoPath + path + ".mp4")));
             int totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
 
-            System.out.println("totalFrames : " + totalFrames);
+            log.info("Total Frames : {}", totalFrames);
 
             for (int i = 0, threadIdx = 0; i < totalFrames; i += frameInterval, threadIdx++) {
                 if (threadIdx % threadSize == threadNo) {
@@ -46,15 +49,15 @@ public class ExtractionThread extends Thread {
 
                     if ((picture = grab.seekToFramePrecise(i).getNativeFrame()) != null) {
                         frameSet.add(i);
-                        System.out.println("Extraction : " + i + ", width : " + picture.getWidth() + ", height : " + picture.getHeight());
-
+                        log.info("Extraction : {}, Width : {}, Height : {}", i, picture.getWidth(), picture.getHeight());
                         BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
                         ImageIO.write(bufferedImage, "png", new File(framePath + path + "_" + i + ".png"));
-                        System.out.println("Write : " + path + "_" + i + ".png");
+                        log.info("Write : {}_{}.png", path, i);
                     }
                 }
             }
         } catch (IOException | JCodecException e) {
+            log.debug("Extraction Fail, {}", e.getMessage());
             frameSet.clear();
             e.printStackTrace();
         }

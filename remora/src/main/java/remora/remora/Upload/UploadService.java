@@ -1,10 +1,13 @@
 package remora.remora.Upload;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Upload.dto.UploadRequestDto;
 import remora.remora.Upload.dto.UploadResponseDto;
+import remora.remora.Exception.InvalidVideoException;
 
 import java.io.File;
 
@@ -14,34 +17,42 @@ public class UploadService {
     String videoPath;
 
     private static int fileNumber = 1;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
-    UploadResponseDto uploadVideo(UploadRequestDto uploadReqDto) {
-        UploadResponseDto uploadResDto = new UploadResponseDto();
+    UploadResponseDto uploadVideo(UploadRequestDto request) {
+        UploadResponseDto response = new UploadResponseDto();
 
-        MultipartFile file = uploadReqDto.getVideoFile();
+        MultipartFile file = request.getVideoFile();
         String fileType = file.getContentType();
-        /*
-            ToDo : 프레임 추출 API 호출을 위한 값을 반환해야 함.
-         */
+
         try {
             if (fileType.contains("video") || fileType.contains("Video")) {
                 File dest = new File(videoPath + "req_video" + fileNumber);
                 file.transferTo(dest);
 
-                uploadResDto.setSuccess(true);
-                uploadResDto.setMessage("Success");
-                uploadResDto.setNeedTranslation(uploadReqDto.getNeedTranslate());
-                uploadResDto.setCode(fileNumber);
+                log.info("Request file = {}", file.getOriginalFilename());
+                log.info("Upload request is {}", "success");
+                response.success = true;
+                response.videoCode = fileNumber++;
+                response.message = "Success";
+                response.needTranslation = request.getNeedTranslate();
+                log.info("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
             }
+
+            else throw new InvalidVideoException();
+
         } catch (Exception e) {
             e.printStackTrace();
 
-            uploadResDto.setMessage(e.getMessage());
-            uploadResDto.setNeedTranslation(uploadReqDto.getNeedTranslate());
-            uploadResDto.setSuccess(false);
-            uploadResDto.setCode(-1);
+            log.debug("Request file = {}", file.getOriginalFilename());
+            log.debug("Upload request is {}", "fail");
+            response.success = false;
+            response.videoCode = -1;
+            response.message = e.getMessage();
+            response.needTranslation = request.getNeedTranslate();
+            log.debug("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
         }
 
-        return uploadResDto;
+        return response;
     }
 }
