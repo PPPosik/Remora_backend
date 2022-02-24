@@ -2,6 +2,8 @@ package remora.remora.FrameExtraction;
 
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class FrameExtractionService {
 
     private static final int threadSize = 2;
     private static final int frameInterval = 150;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     public ArrayList<Integer> frameExtract(String path) throws Exception {
         ArrayList<Integer> ret = new ArrayList<>();
@@ -32,6 +35,7 @@ public class FrameExtractionService {
         }
 
         if (ret.size() == 0) {
+            log.debug("Extraction Fail, Video Not Found");
             throw new NotFoundVideoException();
         }
 
