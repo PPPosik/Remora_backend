@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Upload.dto.UploadRequestDto;
 import remora.remora.Upload.dto.UploadResponseDto;
-import remora.remora.Upload.exception.InvalidVideoException;
+import remora.remora.Exception.InvalidVideoException;
 
 import java.io.File;
 

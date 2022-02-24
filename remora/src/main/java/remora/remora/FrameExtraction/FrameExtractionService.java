@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import remora.remora.FrameExtraction.thread.ExtractionThread;
-import remora.remora.Upload.exception.NotFoundVideoException;
+import remora.remora.Exception.NotFoundVideoException;
 
 @Service
 public class FrameExtractionService {

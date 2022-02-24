@@ -1,4 +1,4 @@
-package remora.remora.Upload.exception;
+package remora.remora.Exception;
 
 public class NotFoundVideoException extends RuntimeException {
     public NotFoundVideoException(){

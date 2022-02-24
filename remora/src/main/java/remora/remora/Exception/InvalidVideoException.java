@@ -1,4 +1,4 @@
-package remora.remora.Upload.exception;
+package remora.remora.Exception;
 
 public class InvalidVideoException extends RuntimeException {
     public InvalidVideoException(){
