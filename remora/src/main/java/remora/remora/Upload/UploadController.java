@@ -25,9 +25,9 @@ public class UploadController {
                                          @RequestParam("needTranslate") List<String> needTranslate){
 
         List<UploadResponseDto> response = new ArrayList<>();
+
         for(int i = 0; i < files.size(); i++){
-            UploadRequestDto request = new UploadRequestDto(files.get(i),
-                                                            needTranslate.get(i).equals("true"));
+            UploadRequestDto request = new UploadRequestDto(files.get(i), needTranslate.get(i).equals("true"));
             response.add(uploadService.uploadVideo(request));
         }
 

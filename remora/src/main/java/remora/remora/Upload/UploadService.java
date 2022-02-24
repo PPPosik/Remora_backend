@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Upload.dto.UploadRequestDto;
 import remora.remora.Upload.dto.UploadResponseDto;
+import remora.remora.Upload.exception.InvalidVideoException;
 
 import java.io.File;
 
@@ -29,7 +30,7 @@ public class UploadService {
                 File dest = new File(videoPath + "req_video" + fileNumber);
                 file.transferTo(dest);
 
-                log.info("Request video = {}", file.getOriginalFilename());
+                log.info("Request file = {}", file.getOriginalFilename());
                 log.info("Upload request is {}", "success");
                 response.success = true;
                 response.videoCode = fileNumber++;
@@ -37,14 +38,17 @@ public class UploadService {
                 response.needTranslation = request.getNeedTranslate();
                 log.info("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
             }
+
+            else throw new InvalidVideoException();
+
         } catch (Exception e) {
             e.printStackTrace();
 
-            log.info("Request video = {}", file.getOriginalFilename());
+            log.info("Request file = {}", file.getOriginalFilename());
             log.info("Upload request is {}", "fail");
             response.success = false;
             response.videoCode = -1;
-            response.message = "Fail";
+            response.message = e.getMessage();
             response.needTranslation = request.getNeedTranslate();
             log.info("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
         }
