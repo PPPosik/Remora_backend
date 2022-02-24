@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import remora.remora.FrameExtraction.thread.ExtractionThread;
+import remora.remora.Upload.exception.NotFoundVideoException;
 
 @Service
 public class FrameExtractionService {
@@ -31,8 +32,9 @@ public class FrameExtractionService {
         }
 
         if (ret.size() == 0) {
-            throw new Exception("Video Not Found");
+            throw new NotFoundVideoException();
         }
+
         return ret;
     }
 
