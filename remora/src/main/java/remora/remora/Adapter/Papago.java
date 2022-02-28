@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import java.util.HashMap;
@@ -25,11 +25,7 @@ public class Papago {
     public static String call(String originText) {
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
-        try {
-            text = URLEncoder.encode(originText, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Encoding fail", e);
-        }
+        text = URLEncoder.encode(originText, StandardCharsets.UTF_8);
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
