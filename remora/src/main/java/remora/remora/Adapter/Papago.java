@@ -1,6 +1,7 @@
 package remora.remora.Adapter;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.io.InputStream;
 
+@Component
 public class Papago {
     private static String clientId;
     private static String clientSecret;
@@ -35,7 +37,7 @@ public class Papago {
 
         String responseBody = post(apiURL, requestHeaders, text);
 
-        System.out.println(responseBody);
+        System.out.println("responseBody = " + responseBody);
         return responseBody;
     }
 
@@ -96,12 +98,12 @@ public class Papago {
     }
 
     @Value("${papago.id}")
-    public static void setClientId(String clientId) {
+    public void setClientId(String clientId) {
         Papago.clientId = clientId;
     }
 
     @Value("${papago.pw}")
-    public static void setClientSecret(String clientSecret) {
+    public void setClientSecret(String clientSecret) {
         Papago.clientSecret = clientSecret;
     }
 }
