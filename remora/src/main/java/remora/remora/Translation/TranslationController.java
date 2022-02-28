@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import remora.remora.Exception.RequestDataLengthDifferentException;
 import remora.remora.Translation.dto.TranslationRequestDto;
 import remora.remora.Translation.dto.TranslationResponseDto;
 
@@ -26,6 +27,10 @@ public class TranslationController {
         TranslationResponseDto response = new TranslationResponseDto();
 
         try {
+            if (request.text.size() != request.needTranslation.size()) {
+                throw new RequestDataLengthDifferentException("text length : " + request.text.size() + ", needTranslation length : " + request.needTranslation.size());
+            }
+
             for (int i = 0; i < request.text.size(); i++) {
                 response.translatedText.add(translationService.translate(request.text.get(i), request.needTranslation.get(i)));
                 response.text.add(request.text.get(i));
