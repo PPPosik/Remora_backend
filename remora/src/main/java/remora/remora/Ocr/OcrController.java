@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import remora.remora.Exception.RequestDataLengthDifferentException;
 import remora.remora.Ocr.dto.OcrRequestDto;
 import remora.remora.Ocr.dto.OcrResponseDto;
 
@@ -26,6 +27,10 @@ public class OcrController {
         OcrResponseDto response = new OcrResponseDto();
 
         try {
+            if (request.frameSet.size() != request.videoCode.size()) {
+                throw new RequestDataLengthDifferentException("frameSet length : " + request.frameSet.size() + ", videoCode length : " + request.videoCode.size());
+            }
+
             for (int i = 0; i < request.videoCode.size(); i++) {
                 response.text.add(ocrService.detection(request.frameSet.get(i), request.videoCode.get(i)));
             }
