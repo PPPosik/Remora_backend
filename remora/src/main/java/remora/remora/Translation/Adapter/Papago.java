@@ -18,11 +18,13 @@ import java.util.HashMap;
 import java.io.InputStream;
 
 @Component
-public class Papago {
-    private static String clientId;
-    private static String clientSecret;
+public class Papago implements TranslationAdapter {
+    @Value("${papago.id}")
+    private String clientId;
+    @Value("${papago.pw}")
+    private String clientSecret;
 
-    public static String translate(String originText) {
+    public String translate(String originText) {
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
         text = URLEncoder.encode(originText, StandardCharsets.UTF_8);
@@ -37,7 +39,7 @@ public class Papago {
         return responseBody;
     }
 
-    private static String post(String apiUrl, Map<String, String> requestHeaders, String text) {
+    private String post(String apiUrl, Map<String, String> requestHeaders, String text) {
         HttpURLConnection con = connect(apiUrl);
         String postParams = "source=en&target=ko&text=" + text;
         try {
@@ -65,7 +67,7 @@ public class Papago {
         }
     }
 
-    private static HttpURLConnection connect(String apiUrl) {
+    private HttpURLConnection connect(String apiUrl) {
         try {
             URL url = new URL(apiUrl);
             return (HttpURLConnection) url.openConnection();
@@ -76,7 +78,7 @@ public class Papago {
         }
     }
 
-    private static String readBody(InputStream body) {
+    private String readBody(InputStream body) {
         InputStreamReader streamReader = new InputStreamReader(body);
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
@@ -91,15 +93,5 @@ public class Papago {
         } catch (IOException e) {
             throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
         }
-    }
-
-    @Value("${papago.id}")
-    public void setClientId(String clientId) {
-        Papago.clientId = clientId;
-    }
-
-    @Value("${papago.pw}")
-    public void setClientSecret(String clientSecret) {
-        Papago.clientSecret = clientSecret;
     }
 }
