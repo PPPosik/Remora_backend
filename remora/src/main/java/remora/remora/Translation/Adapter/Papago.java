@@ -1,4 +1,4 @@
-package remora.remora.Adapter;
+package remora.remora.Translation.Adapter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

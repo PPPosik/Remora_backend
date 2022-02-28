@@ -2,7 +2,7 @@ package remora.remora.Translation;
 
 import org.springframework.stereotype.Service;
 
-import remora.remora.Adapter.Papago;
+import remora.remora.Translation.Adapter.Papago;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
