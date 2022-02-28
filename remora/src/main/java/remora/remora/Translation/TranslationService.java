@@ -14,7 +14,7 @@ public class TranslationService {
             return text;
         }
 
-        String responseBodyStr = Papago.call(text);
+        String responseBodyStr = Papago.translate(text);
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(responseBodyStr);
         JSONObject jsonObj = (JSONObject) obj;

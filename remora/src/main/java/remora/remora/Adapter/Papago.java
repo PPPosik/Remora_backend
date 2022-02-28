@@ -22,7 +22,7 @@ public class Papago {
     private static String clientId;
     private static String clientSecret;
 
-    public static String call(String originText) {
+    public static String translate(String originText) {
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
         text = URLEncoder.encode(originText, StandardCharsets.UTF_8);
