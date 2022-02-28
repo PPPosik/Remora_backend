@@ -1,51 +1,30 @@
 package remora.remora.Translation;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import remora.remora.Adapter.Papago;
-import remora.remora.Translation.dto.TranslationRequestDto;
-import remora.remora.Translation.dto.TranslationResponseDto;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import remora.remora.Translation.Adapter.TranslationAdapter;
 
 @Service
 public class TranslationService {
-    public TranslationResponseDto translate(TranslationRequestDto request) throws Exception {
-        TranslationResponseDto response = new TranslationResponseDto();
-        response.originText = request.originText;
+    private final TranslationAdapter translationModel;
 
-        if(!request.needTranslation){
-            response.success = false;
-            response.translatedText = " ";
-            return response;
+    @Autowired
+    public TranslationService(TranslationAdapter translationModel) {
+        this.translationModel = translationModel;
+    }
+
+    public String translate(String text, Boolean needTranslation) throws Exception {
+        if (!needTranslation) {
+            return text;
         }
 
-        response.success = false;
-        response.translatedText = " ";
-
-        if (!this.checkSupportedLanguage(request.language)) {
-            throw new Exception("Cannot translate language " + request.language);
-        }
-
-        String responseBodyStr = Papago.call(request.originText);
+        String responseBodyStr = translationModel.translate(text);
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(responseBodyStr);
         JSONObject jsonObj = (JSONObject) obj;
-        // TODO find better solution for nested json
-        response.translatedText = (String) ((JSONObject) ((JSONObject) jsonObj.get("message")).get("result"))
-                .get("translatedText");
-        response.success = true;
-
-        return response;
-    }
-
-    private Boolean checkSupportedLanguage(String language) {
-        // TODO only support en -> ko
-        if (language.equals("en")) {
-            return true;
-        } else {
-            return false;
-        }
+        return (String) ((JSONObject) ((JSONObject) jsonObj.get("message")).get("result")).get("translatedText");
     }
 }

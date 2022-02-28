@@ -1,13 +1,20 @@
 package remora.remora.Translation.dto;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TranslationRequestDto {
-    public String originText;
-    public String language;
-    public Boolean needTranslation;
-    
-    public TranslationRequestDto(StringBuffer originText, String language, Boolean needTranslation){
-        this.originText = originText.toString();
-        this.language = language;
-        this.needTranslation = needTranslation;
+    @NotEmpty
+    @NotNull
+    public List<String> text;
+    @NotEmpty
+    @NotNull
+    public List<Boolean> needTranslation;
+
+    public TranslationRequestDto() {
+        this.text = new ArrayList<>();
+        this.needTranslation = new ArrayList<>();
     }
 }
