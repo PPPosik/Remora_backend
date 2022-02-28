@@ -11,7 +11,7 @@ import org.json.simple.parser.JSONParser;
 public class TranslationService {
     public String translate(String text, Boolean needTranslation) throws Exception {
         if (!needTranslation) {
-            return null;
+            return text;
         }
 
         String responseBodyStr = Papago.call(text);
