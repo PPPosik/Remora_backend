@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import remora.remora.Common.Cli;
+import remora.remora.Exception.NotExistTextException;
+import remora.remora.Exception.OcrModuleException;
 
 @Service
 public class OcrService {
@@ -40,13 +42,13 @@ public class OcrService {
             }
             reader.close();
         } else {
-            log.debug("Run OCR module error");
-            throw new Exception("Run OCR module error");
+            log.debug("OCR Fail, OCR module error");
+            throw new OcrModuleException();
         }
 
         if (ret.length() == 0) {
-            log.debug("There is no text in video");
-            throw new Exception("There is no text in video");
+            log.debug("OCR Fail, There is no text in video");
+            throw new NotExistTextException();
         }
 
         return ret.toString();
