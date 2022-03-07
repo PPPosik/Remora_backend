@@ -1,5 +1,7 @@
 package remora.remora.Translation.Adapter;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,13 +20,13 @@ import java.util.HashMap;
 import java.io.InputStream;
 
 @Component
-public class Papago implements TranslationAdapter {
+public class PapagoTranslation implements TranslationAdapter {
     @Value("${papago.id}")
     private String clientId;
     @Value("${papago.pw}")
     private String clientSecret;
 
-    public String translate(String originText) {
+    public String translate(String originText) throws Exception {
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
         text = URLEncoder.encode(originText, StandardCharsets.UTF_8);
@@ -34,9 +36,12 @@ public class Papago implements TranslationAdapter {
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = post(apiURL, requestHeaders, text);
-
         System.out.println("responseBody = " + responseBody);
-        return responseBody;
+
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(responseBody);
+        JSONObject jsonObj = (JSONObject) obj;
+        return (String) ((JSONObject) ((JSONObject) jsonObj.get("message")).get("result")).get("translatedText");
     }
 
     private String post(String apiUrl, Map<String, String> requestHeaders, String text) {

@@ -21,10 +21,6 @@ public class TranslationService {
             return text;
         }
 
-        String responseBodyStr = translationModel.translate(text);
-        JSONParser parser = new JSONParser();
-        Object obj = parser.parse(responseBodyStr);
-        JSONObject jsonObj = (JSONObject) obj;
-        return (String) ((JSONObject) ((JSONObject) jsonObj.get("message")).get("result")).get("translatedText");
+        return translationModel.translate(text);
     }
 }
