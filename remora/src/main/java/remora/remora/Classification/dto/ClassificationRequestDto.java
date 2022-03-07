@@ -1,13 +1,16 @@
 package remora.remora.Classification.dto;
 
-public class ClassificationRequestDto {
-    public String originResultText;
-    public String translatedResultText;
-    public String language;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
-    public ClassificationRequestDto(StringBuffer originResultText, String translatedResultText, String language){
-        this.originResultText = originResultText.toString();
-        this.translatedResultText = translatedResultText;
-        this.language = language;
+public class ClassificationRequestDto {
+    @NotNull
+    @NotEmpty
+    public List<String> translatedText;
+
+    public ClassificationRequestDto() {
+        this.translatedText = new ArrayList<>();
     }
 }
