@@ -1,15 +1,12 @@
 package remora.remora.Classification;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import remora.remora.Classification.dto.ClassificationRequestDto;
-import remora.remora.Classification.dto.ClassificationResponseDto;
 import remora.remora.Common.Cli;
 
 @Service
@@ -18,29 +15,36 @@ public class ClassificationService {
     String classificationModulePath;
     @Value("${classification-result-path}")
     String classificationResultPath;
+    @Value("${classification-input-path}")
+    String classificationInputPath;
 
-    public ClassificationResponseDto classification(ClassificationRequestDto request) {
-        ClassificationResponseDto response = new ClassificationResponseDto();
-        response.success = false;
-        response.keywords = new ArrayList<String>();
+    public List<String> classification(String translatedText) throws Exception {
+        List<String> keywords = new ArrayList<>();
 
-        final Boolean success = Cli.exec(classificationModulePath, "");
-        if (success) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(classificationResultPath));
+        writeOriginText(translatedText);
 
-                String str;
-                while ((str = reader.readLine()) != null) {
-                    System.out.println(str);
-                    response.keywords.add(str);
-                }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return response;
+        if (Cli.exec(classificationModulePath, classificationInputPath)) {
+            BufferedReader reader = new BufferedReader(new FileReader(classificationResultPath));
+
+            String str;
+            while ((str = reader.readLine()) != null) {
+                System.out.println(str);
+                keywords.add(str);
             }
+            reader.close();
         }
 
-        return response;
+        return keywords;
+    }
+
+    private void writeOriginText(String str) throws IOException {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(classificationInputPath));
+            writer.write(str);
+            writer.close();
+        } catch (IOException e) {
+            throw new IOException("writeOriginText fail : " + e);
+        }
     }
 }
