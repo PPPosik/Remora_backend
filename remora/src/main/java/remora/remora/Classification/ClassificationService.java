@@ -4,13 +4,19 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import remora.remora.Classification.Adapter.LanguageDetectionAdapter;
 import remora.remora.Common.Cli;
+import remora.remora.Classification.Enum.DetectionLanguageCode;
+import remora.remora.Exception.NotSupportedLanguageException;
 
 @Service
 public class ClassificationService {
+    private final LanguageDetectionAdapter languageDetectionModel;
+
     @Value("${classification-module-path}")
     String classificationModulePath;
     @Value("${classification-result-path}")
@@ -18,8 +24,18 @@ public class ClassificationService {
     @Value("${classification-input-path}")
     String classificationInputPath;
 
+    @Autowired
+    public ClassificationService(LanguageDetectionAdapter languageDetectionModel) {
+        this.languageDetectionModel = languageDetectionModel;
+    }
+
     public List<String> classification(String translatedText) throws Exception {
         List<String> keywords = new ArrayList<>();
+
+        DetectionLanguageCode language = languageDetectionModel.detectLanguage(translatedText);
+        if (language != DetectionLanguageCode.KO && language != DetectionLanguageCode.EN) {
+            throw new NotSupportedLanguageException("Language(" + language.toString() + ") is not supported");
+        }
 
         writeOriginText(translatedText);
 
