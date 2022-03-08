@@ -1,46 +1,66 @@
 package remora.remora.Classification;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import remora.remora.Classification.dto.ClassificationRequestDto;
-import remora.remora.Classification.dto.ClassificationResponseDto;
+import remora.remora.Classification.Adapter.LanguageDetectionAdapter;
 import remora.remora.Common.Cli;
+import remora.remora.Classification.Enum.DetectionLanguageCode;
+import remora.remora.Exception.NotSupportedLanguageException;
 
 @Service
 public class ClassificationService {
+    private final LanguageDetectionAdapter languageDetectionModel;
+
     @Value("${classification-module-path}")
     String classificationModulePath;
     @Value("${classification-result-path}")
     String classificationResultPath;
+    @Value("${classification-input-path}")
+    String classificationInputPath;
 
-    public ClassificationResponseDto classification(ClassificationRequestDto request) {
-        ClassificationResponseDto response = new ClassificationResponseDto();
-        response.success = false;
-        response.keywords = new ArrayList<String>();
+    @Autowired
+    public ClassificationService(LanguageDetectionAdapter languageDetectionModel) {
+        this.languageDetectionModel = languageDetectionModel;
+    }
 
-        final Boolean success = Cli.exec(classificationModulePath, "");
-        if (success) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(classificationResultPath));
+    public List<String> classification(String translatedText) throws Exception {
+        List<String> keywords = new ArrayList<>();
 
-                String str;
-                while ((str = reader.readLine()) != null) {
-                    System.out.println(str);
-                    response.keywords.add(str);
-                }
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return response;
-            }
+        DetectionLanguageCode language = languageDetectionModel.detectLanguage(translatedText);
+        if (language != DetectionLanguageCode.KO && language != DetectionLanguageCode.EN) {
+            throw new NotSupportedLanguageException("Language(" + language.toString() + ") is not supported");
         }
 
-        return response;
+        writeOriginText(translatedText);
+
+        if (Cli.exec(classificationModulePath, classificationInputPath)) {
+            BufferedReader reader = new BufferedReader(new FileReader(classificationResultPath));
+
+            String str;
+            while ((str = reader.readLine()) != null) {
+                System.out.println(str);
+                keywords.add(str);
+            }
+            reader.close();
+        }
+
+        return keywords;
+    }
+
+    private void writeOriginText(String str) throws IOException {
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(classificationInputPath));
+            writer.write(str);
+            writer.close();
+        } catch (IOException e) {
+            throw new IOException("writeOriginText fail : " + e);
+        }
     }
 }

@@ -1,47 +1,50 @@
-package remora.remora.Translation.Adapter;
+package remora.remora.Classification.Adapter;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import remora.remora.Classification.Enum.DetectionLanguageCode;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
 import java.util.HashMap;
-import java.io.InputStream;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
-public class Papago implements TranslationAdapter {
+public class PapagoLanguageDetection implements LanguageDetectionAdapter {
     @Value("${papago.id}")
     private String clientId;
     @Value("${papago.pw}")
     private String clientSecret;
 
-    public String translate(String originText) {
-        String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
-        String text;
-        text = URLEncoder.encode(originText, StandardCharsets.UTF_8);
+    @Override
+    public DetectionLanguageCode detectLanguage(String str) throws Exception {
+        String query = URLEncoder.encode(str, StandardCharsets.UTF_8);
+        String apiURL = "https://openapi.naver.com/v1/papago/detectLangs";
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
-        String responseBody = post(apiURL, requestHeaders, text);
+        String responseBody = post(apiURL, requestHeaders, query);
+        System.out.println(responseBody);
 
-        System.out.println("responseBody = " + responseBody);
-        return responseBody;
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(responseBody);
+        JSONObject jsonObj = (JSONObject) obj;
+
+        return DetectionLanguageCode.of((String) (jsonObj.get("langCode"))).orElse(DetectionLanguageCode.UNK);
     }
 
     private String post(String apiUrl, Map<String, String> requestHeaders, String text) {
         HttpURLConnection con = connect(apiUrl);
-        String postParams = "source=en&target=ko&text=" + text;
+        String postParams = "query=" + text;
         try {
             con.setRequestMethod("POST");
             for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
