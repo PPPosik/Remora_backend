@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import remora.remora.Classification.Adapter.LanguageDetectionAdapter;
 import remora.remora.Common.Cli;
 import remora.remora.Classification.Enum.DetectionLanguageCode;
+import remora.remora.Exception.ClassificationModuleException;
+import remora.remora.Exception.NotExistKeywordException;
 import remora.remora.Exception.NotSupportedLanguageException;
 
 @Service
@@ -48,6 +50,12 @@ public class ClassificationService {
                 keywords.add(str);
             }
             reader.close();
+        } else {
+            throw new ClassificationModuleException();
+        }
+
+        if (keywords.size() == 0) {
+            throw new NotExistKeywordException();
         }
 
         return keywords;
