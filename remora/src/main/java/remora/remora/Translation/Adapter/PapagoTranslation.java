@@ -2,8 +2,11 @@ package remora.remora.Translation.Adapter;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import remora.remora.Exception.TranslateException;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -26,6 +29,8 @@ public class PapagoTranslation implements TranslationAdapter {
     @Value("${papago.pw}")
     private String clientSecret;
 
+    private Logger log = LoggerFactory.getLogger(getClass());
+
     public String translate(String originText) throws Exception {
         String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
         String text;
@@ -36,7 +41,7 @@ public class PapagoTranslation implements TranslationAdapter {
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = post(apiURL, requestHeaders, text);
-        System.out.println("responseBody = " + responseBody);
+        log.info("Response Body = {}", responseBody);
 
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(responseBody);
@@ -66,7 +71,7 @@ public class PapagoTranslation implements TranslationAdapter {
                 return readBody(con.getErrorStream());
             }
         } catch (IOException e) {
-            throw new RuntimeException("API 요청과 응답 실패", e);
+            throw new TranslateException("API Request or Response fail");
         } finally {
             con.disconnect();
         }
@@ -77,9 +82,9 @@ public class PapagoTranslation implements TranslationAdapter {
             URL url = new URL(apiUrl);
             return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
-            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
+            throw new TranslateException("Invalid API URL. Request URL : " + apiUrl);
         } catch (IOException e) {
-            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
+            throw new TranslateException("Connection fail. Request URL : " + apiUrl);
         }
     }
 
@@ -96,7 +101,7 @@ public class PapagoTranslation implements TranslationAdapter {
 
             return responseBody.toString();
         } catch (IOException e) {
-            throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
+            throw new TranslateException("API request read fail");
         }
     }
 }
