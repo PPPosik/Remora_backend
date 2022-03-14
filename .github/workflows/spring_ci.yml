@@ -23,6 +23,9 @@ jobs:
     - name: Move directory
       run: cd remora
 
+    - name: Check files
+      run: ls -l
+
     - name: Grant permission for gradlew
       run: chmod +x gradlew
 
