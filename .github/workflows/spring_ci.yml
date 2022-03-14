@@ -20,9 +20,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: Look for gradlew
-      run: find / -type f -name "gradlew"
-
     - name: Grant permission for gradlew
       run: chmod +x remora/gradlew
 
