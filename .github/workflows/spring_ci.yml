@@ -23,6 +23,9 @@ jobs:
     - name: Grant permission for gradlew
       run: chmod +x remora/gradlew
 
+    - name: Clean Build
+      run: ./remora/gradlew clean
+
     - name: Build with Gradle
       run: ./remora/gradlew build -x test
 
