@@ -3,7 +3,6 @@ package remora.remora.FrameExtraction;
 import org.jcodec.api.FrameGrab;
 import org.jcodec.common.io.NIOUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

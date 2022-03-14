@@ -3,8 +3,6 @@ package remora.remora.Translation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import remora.remora.Translation.Adapter.TranslationAdapter;
 
 @Service

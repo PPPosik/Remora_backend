@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import remora.remora.Upload.dto.UploadRequestDto;
 import remora.remora.Upload.dto.UploadResponseDto;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
