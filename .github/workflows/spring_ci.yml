@@ -19,7 +19,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-        cache: 'gradle'
+
+    - name: Look for gradlew
+      run: find / -type f -name "gradlew"
 
     - name: Grant permission for gradlew
       run: chmod +x gradlew
