@@ -24,13 +24,13 @@ jobs:
       run: chmod +x remora/gradlew
 
     - name: Clean build
-      run: ./remora/gradlew clean build
+      run: ./gradlew clean build
 
     - name: Build with Gradle
-      run: ./remora/gradlew build -x test
+      run: ./gradlew build -x test
 
     - name: Test with Gradle
-      run: ./remora/gradlew test
+      run: ./gradlew test
 
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
