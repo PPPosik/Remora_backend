@@ -20,8 +20,11 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
+    - name: Move directory
+      run: cd remora
+
     - name: Grant permission for gradlew
-      run: chmod +x remora/gradlew
+      run: chmod +x gradlew
 
     - name: Clean build
       run: ./gradlew clean build
