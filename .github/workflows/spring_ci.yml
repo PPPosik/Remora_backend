@@ -24,16 +24,16 @@ jobs:
       run: find / -type f -name "gradlew"
 
     - name: Grant permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x remora/gradlew
 
     - name: Clean build
-      run: ./gradlew clean build
+      run: ./remora/gradlew clean build
 
     - name: Build with Gradle
-      run: ./gradlew build -x test
+      run: ./remora/gradlew build -x test
 
     - name: Test with Gradle
-      run: ./gradlew test
+      run: ./remora/gradlew test
 
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
