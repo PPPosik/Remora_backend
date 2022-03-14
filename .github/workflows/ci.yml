@@ -21,16 +21,16 @@ jobs:
         distribution: 'temurin'
 
     - name: Grant permission for gradlew
-      run: chmod +x remora/gradlew
+      run: chmod +x gradlew
 
     - name: Clean Build
-      run: ./remora/gradlew clean
+      run: ./gradlew clean
 
     - name: Build with Gradle
-      run: ./remora/gradlew build -x test
+      run: ./gradlew build -x test
 
     - name: Test with Gradle
-      run: ./remora/gradlew test
+      run: ./gradlew test
 
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
