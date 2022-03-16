@@ -20,6 +20,24 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
+    - name: Generate .env file
+      run: |
+        echo "OCR_MODULE_PATH=$OCR_MODULE_PATH" >> .env
+        echo "OCR_RESULT_PATH=$OCR_RESULT_PATH" >> .env
+      env:
+        PAPAGO_ID: ${{ secret.PAPAGO_ID }}
+        PAPAGO_PW: ${{ secret.PAPAGO_PW }}
+        VIDEO_PATH: ${{ secret.VIDEO_PATH }}
+        FRAME_PATH: ${{ secret.FRAME_PATH }}
+        OCR_MODULE_PATH: ${{ secret.OCR_MODULE_PATH }}
+        OCR_RESULT_PATH: ${{ secret.OCR_RESULT_PATH }}
+        CLASSIFICATION_INPUT_PATH: ${{ secret.CLASSIFICATION_INPUT_PATH }}
+        CLASSIFICATION_MODULE_PATH: ${{ secret.CLASSIFICATION_MODULE_PATH }}
+        CLASSIFICATION_RESULT_PATH: ${{ secret.CLASSIFICATION_RESULT_PATH }}
+
+    - name: Show .env file
+      run: cat .env
+
     - name: Grant permission for gradlew
       run: chmod +x gradlew
 
