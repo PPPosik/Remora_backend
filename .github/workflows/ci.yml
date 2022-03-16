@@ -22,8 +22,16 @@ jobs:
 
     - name: Generate .env file
       run: |
+        echo "PAPAGO_ID=$PAPAGO_ID" >> .env
+        echo "PAPAGO_PW=$PAPAGO_PW" >> .env
+        echo "VIDEO_PATH=$VIDEO_PATH" >> .env
+        echo "FRAME_PATH=$FRAME_PATH" >> .env
         echo "OCR_MODULE_PATH=$OCR_MODULE_PATH" >> .env
         echo "OCR_RESULT_PATH=$OCR_RESULT_PATH" >> .env
+        echo "CLASSIFICATION_INPUT_PATH=$CLASSIFICATION_INPUT_PATH" >> .env
+        echo "CLASSIFICATION_MODULE_PATH=$CLASSIFICATION_MODULE_PATH" >> .env
+        echo "CLASSIFICATION_RESULT_PATH=$CLASSIFICATION_RESULT_PATH" >> .env
+
       env:
         PAPAGO_ID: ${{ secrets.PAPAGO_ID }}
         PAPAGO_PW: ${{ secrets.PAPAGO_PW }}
@@ -35,8 +43,10 @@ jobs:
         CLASSIFICATION_MODULE_PATH: ${{ secrets.CLASSIFICATION_MODULE_PATH }}
         CLASSIFICATION_RESULT_PATH: ${{ secrets.CLASSIFICATION_RESULT_PATH }}
 
-    - name: Show .env file
-      run: cat .env
+    - name: Move .env file to resource directory
+      run: |
+        cp .env src/main/resources/.
+        cp .env src/test/resources/.
 
     - name: Grant permission for gradlew
       run: chmod +x gradlew
