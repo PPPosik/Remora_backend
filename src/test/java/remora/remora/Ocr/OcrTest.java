@@ -70,8 +70,7 @@ public class OcrTest {
     }
 
     @Test
-    public void ocrSuccess() {
-        try {
+    public void ocrSuccess() throws Exception {
             String result = ocrService.detection(frameSet, videoCode);
 
             StringBuilder expectedStr = new StringBuilder();
@@ -84,10 +83,6 @@ public class OcrTest {
             reader.close();
 
             assertThat(result).isEqualTo(expectedStr.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 
     @Test
