@@ -39,17 +39,12 @@ public class FrameExtractionTest {
     }
 
     @Test
-    public void frameExtract() {
-        try {
+    public void frameExtract() throws Exception{
             FrameGrab grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(new File(videoPath + "1.mp4")));
             double totalFrames = grab.getVideoTrack().getMeta().getTotalFrames();
 
             ArrayList<Integer> result = frameExtractionService.frameExtract("1");
             assertThat(result.size()).isEqualTo((int) Math.ceil(totalFrames / frameExtractionService.getFrameInterval()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 
     @Test
