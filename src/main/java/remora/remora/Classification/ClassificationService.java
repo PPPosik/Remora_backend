@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import remora.remora.Exception.NotSupportedLanguageException;
 @Service
 public class ClassificationService {
     private final LanguageDetectionAdapter languageDetectionModel;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Value("${classification-module-path}")
     String classificationModulePath;
@@ -36,6 +39,7 @@ public class ClassificationService {
 
         DetectionLanguageCode language = languageDetectionModel.detectLanguage(translatedText);
         if (language != DetectionLanguageCode.KO && language != DetectionLanguageCode.EN) {
+            log.debug("Classification Fail, Language is not supported");
             throw new NotSupportedLanguageException("Language(" + language.toString() + ") is not supported");
         }
 
@@ -46,7 +50,7 @@ public class ClassificationService {
 
             String str;
             while ((str = reader.readLine()) != null) {
-                System.out.println(str);
+                log.info("keyword : {}", str);
                 keywords.add(str);
             }
             reader.close();
@@ -68,6 +72,7 @@ public class ClassificationService {
             writer.write(str);
             writer.close();
         } catch (IOException e) {
+            log.debug("WriteOriginText Fail, {}", e.getMessage());
             throw new IOException("writeOriginText fail : " + e);
         }
     }
