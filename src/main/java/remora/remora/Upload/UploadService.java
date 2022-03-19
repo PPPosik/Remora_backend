@@ -16,7 +16,7 @@ public class UploadService {
     @Value("${video-path}")
     String videoPath;
 
-    private static int fileNumber = 1;
+    private static int fileNumber = 0;
     private Logger log = LoggerFactory.getLogger(getClass());
 
     UploadResponseDto uploadVideo(UploadRequestDto request) {
@@ -33,7 +33,7 @@ public class UploadService {
                 log.info("Request file = {}", file.getOriginalFilename());
                 log.info("Upload request is {}", "success");
                 response.success = true;
-                response.videoCode = fileNumber++;
+                response.videoCode = Integer.toString(++fileNumber);
                 response.message = "Success";
                 response.needTranslation = request.getNeedTranslate();
                 log.info("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
@@ -47,7 +47,7 @@ public class UploadService {
             log.debug("Request file = {}", file.getOriginalFilename());
             log.debug("Upload request is {}", "fail");
             response.success = false;
-            response.videoCode = -1;
+            response.videoCode = "-1";
             response.message = e.getMessage();
             response.needTranslation = request.getNeedTranslate();
             log.debug("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
