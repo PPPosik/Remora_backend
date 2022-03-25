@@ -20,3 +20,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: ls -al
+
+    - name: Deploy
+      run: |
+        sh deploy.sh
