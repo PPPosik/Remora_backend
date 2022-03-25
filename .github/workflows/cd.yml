@@ -12,15 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Connect ssh
+    - name: Deploy
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        script: ls -al
-
-    - name: Deploy
-      run: |
-        sudo sh deploy.sh
+        script: |
+          ls -al
+          sudo sh deploy.sh
