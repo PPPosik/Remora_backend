@@ -65,3 +65,14 @@ jobs:
       if: ${{ always() }}
       with:
         files: build/test-results/**/*.xml
+
+    - name: Upload jar file
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ~
+          ls -l
