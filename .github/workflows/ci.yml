@@ -76,5 +76,5 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        source: "remora-0.0.1-SNAPSHOT.jar"
+        source: "remora-0.0.1-SNAPSHOT.jar, deploy.sh"
         target: "/home/server"
