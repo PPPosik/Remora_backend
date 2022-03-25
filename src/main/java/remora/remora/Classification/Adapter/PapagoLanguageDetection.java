@@ -2,6 +2,8 @@ package remora.remora.Classification.Adapter;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import remora.remora.Classification.Enum.DetectionLanguageCode;
@@ -21,6 +23,7 @@ public class PapagoLanguageDetection implements LanguageDetectionAdapter {
     private String clientId;
     @Value("${papago.pw}")
     private String clientSecret;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public DetectionLanguageCode detectLanguage(String str) throws Exception {
@@ -32,7 +35,7 @@ public class PapagoLanguageDetection implements LanguageDetectionAdapter {
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
 
         String responseBody = post(apiURL, requestHeaders, query);
-        System.out.println(responseBody);
+        log.info("Papago Response : {}", responseBody);
 
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(responseBody);
