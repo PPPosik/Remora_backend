@@ -23,4 +23,4 @@ jobs:
 
     - name: Deploy
       run: |
-        sh deploy.sh
+        sudo sh deploy.sh
