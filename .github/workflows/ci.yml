@@ -74,4 +74,4 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         source: "build/libs/remora-0.0.1-SNAPSHOT.jar"
-        target: "cd/server"
+        target: "/home/server"
