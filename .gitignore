@@ -62,6 +62,7 @@ out/
 
 # configuration
 .env
+.env.*
 
 ### test data result ###
 *.png
