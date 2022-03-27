@@ -1,0 +1,80 @@
+name: Spring Boot CI with Gradle
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Generate .env file
+      run: |
+        echo "PAPAGO_ID=$PAPAGO_ID" >> .env
+        echo "PAPAGO_PW=$PAPAGO_PW" >> .env
+        echo "VIDEO_PATH=$VIDEO_PATH" >> .env
+        echo "FRAME_PATH=$FRAME_PATH" >> .env
+        echo "OCR_MODULE_PATH=$OCR_MODULE_PATH" >> .env
+        echo "OCR_RESULT_PATH=$OCR_RESULT_PATH" >> .env
+        echo "CLASSIFICATION_INPUT_PATH=$CLASSIFICATION_INPUT_PATH" >> .env
+        echo "CLASSIFICATION_MODULE_PATH=$CLASSIFICATION_MODULE_PATH" >> .env
+        echo "CLASSIFICATION_RESULT_PATH=$CLASSIFICATION_RESULT_PATH" >> .env
+
+      env:
+        PAPAGO_ID: ${{ secrets.PAPAGO_ID }}
+        PAPAGO_PW: ${{ secrets.PAPAGO_PW }}
+        VIDEO_PATH: ${{ secrets.VIDEO_PATH }}
+        FRAME_PATH: ${{ secrets.FRAME_PATH }}
+        OCR_MODULE_PATH: ${{ secrets.OCR_MODULE_PATH }}
+        OCR_RESULT_PATH: ${{ secrets.OCR_RESULT_PATH }}
+        CLASSIFICATION_INPUT_PATH: ${{ secrets.CLASSIFICATION_INPUT_PATH }}
+        CLASSIFICATION_MODULE_PATH: ${{ secrets.CLASSIFICATION_MODULE_PATH }}
+        CLASSIFICATION_RESULT_PATH: ${{ secrets.CLASSIFICATION_RESULT_PATH }}
+
+    - name: Move .env file to resource directory
+      run: |
+        cp .env src/main/resources/.
+        cp .env src/test/resources/.
+
+    - name: Grant permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Clean Build
+      run: ./gradlew clean
+
+    - name: Build with Gradle
+      run: ./gradlew build -x test
+
+    - name: Test with Gradle
+      run: ./gradlew test
+
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: ${{ always() }}
+      with:
+        files: build/test-results/**/*.xml
+
+    - name: Move jar file
+      run: cp build/libs/remora-0.0.1-SNAPSHOT.jar .
+
+    - name: Upload jar file
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "remora-0.0.1-SNAPSHOT.jar, deploy.sh"
+        target: "/home/server"
