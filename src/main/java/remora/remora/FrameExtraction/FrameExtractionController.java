@@ -3,10 +3,8 @@ package remora.remora.FrameExtraction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import remora.remora.FrameExtraction.dto.FrameExtractionRequestDto;
 import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
@@ -23,7 +21,7 @@ public class FrameExtractionController {
         this.frameExtractionService = frameExtractionService;
     }
 
-    @GetMapping("/frames")
+    @PostMapping(value = "/frames", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public FrameExtractionResponseDto frameExtract(@RequestBody @Valid FrameExtractionRequestDto request) {
         FrameExtractionResponseDto response = new FrameExtractionResponseDto();

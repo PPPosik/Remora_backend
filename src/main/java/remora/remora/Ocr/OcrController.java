@@ -3,10 +3,8 @@ package remora.remora.Ocr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import remora.remora.Exception.RequestDataLengthDifferentException;
 import remora.remora.Ocr.dto.OcrRequestDto;
@@ -24,7 +22,7 @@ public class OcrController {
         this.ocrService = ocrService;
     }
 
-    @GetMapping("/text")
+    @PostMapping(value = "/text", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public OcrResponseDto detection(@RequestBody @Valid OcrRequestDto request) {
         OcrResponseDto response = new OcrResponseDto();
