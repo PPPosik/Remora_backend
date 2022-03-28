@@ -1,11 +1,10 @@
 cd /home/server/remora
 git pull origin master
-
-cd /home/server
+sh gradlew build -x test
 
 APP_NAME=remora
-
-JAR_PATH=$(ls | grep jar | head -n 1)
+JAR_NAME=$(ls build/libs | grep jar | head -n 1)
+JAR_PATH=/home/server/remora/build/libs/$JAR_NAME
 
 CURRENT_PID=$(pgrep -f $APP_NAME)
 if [ -z $CURRENT_PID ]
