@@ -2,7 +2,7 @@ package remora.remora.FrameExtraction;
 
 import org.jcodec.api.FrameGrab;
 import org.jcodec.common.io.NIOUtils;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,23 +19,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class FrameExtractionTest {
     @Value("${video-path}")
     String videoPath;
-    @Value("${frame-path}")
-    String framePath;
 
     @Autowired
     FrameExtractionService frameExtractionService;
 
-    @AfterEach
-    public void afterEach() {
-        File[] files = new File(framePath).listFiles();
-
-        if (files != null) {
-            for (File file : files) {
-                if (!file.getName().equals(".gitkeep")) {
-                    file.delete();
-                }
-            }
-        }
+    @BeforeEach
+    public void beforeEach() {
+        frameExtractionService.deleteFrames();
     }
 
     @Test

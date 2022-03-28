@@ -1,5 +1,6 @@
 package remora.remora.FrameExtraction;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class FrameExtractionService {
         ArrayList<Integer> ret = new ArrayList<>();
         ExtractionThread[] extractionThread = new ExtractionThread[threadSize];
 
+        deleteFrames();
+
         for (int i = 0; i < threadSize; i++) {
             extractionThread[i] = new ExtractionThread(i, threadSize, frameInterval, videoPath, framePath, ret, path);
             extractionThread[i].start();
@@ -44,5 +47,17 @@ public class FrameExtractionService {
 
     public int getFrameInterval() {
         return frameInterval;
+    }
+
+    public void deleteFrames() {
+        File[] files = new File(framePath).listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (!file.getName().equals(".gitkeep")) {
+                    file.delete();
+                }
+            }
+        }
     }
 }
