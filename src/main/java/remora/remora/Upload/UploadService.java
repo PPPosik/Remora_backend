@@ -27,7 +27,7 @@ public class UploadService {
 
         try {
             if (fileType.contains("video") || fileType.contains("Video")) {
-                File dest = new File(videoPath + "req_video" + fileNumber);
+                File dest = new File(videoPath + fileNumber);
                 file.transferTo(dest);
 
                 log.info("Request file = {}", file.getOriginalFilename());
