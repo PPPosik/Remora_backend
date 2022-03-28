@@ -3,10 +3,8 @@ package remora.remora.Translation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import remora.remora.Exception.RequestDataLengthDifferentException;
 import remora.remora.Translation.dto.TranslationRequestDto;
@@ -24,7 +22,7 @@ public class TranslationController {
         this.translationService = translationService;
     }
 
-    @GetMapping("/text/translated")
+    @PostMapping(value = "/text/translated", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public TranslationResponseDto translate(@RequestBody @Valid TranslationRequestDto request) {
         TranslationResponseDto response = new TranslationResponseDto();
