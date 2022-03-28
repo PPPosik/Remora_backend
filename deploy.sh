@@ -1,3 +1,6 @@
+cd /home/server/remora
+git pull origin master
+
 cd /home/server
 
 APP_NAME=remora
