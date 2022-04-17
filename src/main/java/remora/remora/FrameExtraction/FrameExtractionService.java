@@ -2,6 +2,7 @@ package remora.remora.FrameExtraction;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,8 @@ public class FrameExtractionService {
             log.debug("Extraction Fail, Video Not Found");
             throw new NotFoundVideoException();
         }
+
+        Collections.sort(ret);
 
         return ret;
     }
