@@ -13,6 +13,7 @@ import remora.remora.Translation.dto.TranslationResponseDto;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin(origins = "http://remora-223.herokuapp.com, http://localhost:3000")
 public class TranslationController {
     private final TranslationService translationService;
     private Logger log = LoggerFactory.getLogger(getClass());

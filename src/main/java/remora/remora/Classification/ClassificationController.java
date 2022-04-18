@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import remora.remora.Classification.dto.ClassificationResponseDto;
 import javax.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "http://remora-223.herokuapp.com, http://localhost:3000")
 public class ClassificationController {
     private final ClassificationService classificationService;
     private Logger log = LoggerFactory.getLogger(getClass());
