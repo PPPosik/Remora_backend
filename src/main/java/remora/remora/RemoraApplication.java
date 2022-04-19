@@ -13,16 +13,15 @@ public class RemoraApplication {
 		SpringApplication.run(RemoraApplication.class, args);
 	}
 
-//	@Bean
-//	public WebMvcConfigurer corsConfig(){
-//		return new WebMvcConfigurer() {
-//			@Override
-//			public void addCorsMappings(CorsRegistry registry) {
-//				registry.addMapping("/**")
-//						.allowedOrigins("http://remora-223.herokuapp.com, http://cors-anywhere.herokuapp.com, http://localhost:3000, https://localhost:3000")
-//						.allowedMethods("GET", "POST");
-//			}
-//		};
-//	}
-
+	@Bean
+	public WebMvcConfigurer corsConfig(){
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+						.allowedOrigins("http://remora-223.herokuapp.com, http://cors-anywhere.herokuapp.com, http://localhost:3000, https://localhost:3000")
+						.allowedMethods("GET", "POST");
+			}
+		};
+	}
 }
