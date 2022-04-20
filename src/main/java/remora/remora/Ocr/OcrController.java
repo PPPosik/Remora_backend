@@ -13,7 +13,6 @@ import remora.remora.Ocr.dto.OcrResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://remora-223.herokuapp.com"})
 public class OcrController {
     private final OcrService ocrService;
     private Logger log = LoggerFactory.getLogger(getClass());

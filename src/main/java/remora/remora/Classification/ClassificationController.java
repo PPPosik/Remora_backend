@@ -15,7 +15,6 @@ import remora.remora.Classification.dto.ClassificationResponseDto;
 import javax.validation.Valid;
 
 @Controller
-@CrossOrigin(origins = {"http://localhost:3000", "http://remora-223.herokuapp.com"})
 public class ClassificationController {
     private final ClassificationService classificationService;
     private Logger log = LoggerFactory.getLogger(getClass());

@@ -12,7 +12,6 @@ import remora.remora.FrameExtraction.dto.FrameExtractionResponseDto;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://remora-223.herokuapp.com"})
 public class FrameExtractionController {
     private final FrameExtractionService frameExtractionService;
     private Logger log = LoggerFactory.getLogger(getClass());

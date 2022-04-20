@@ -19,7 +19,7 @@ public class RemoraApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://remora-223.herokuapp.com, http://cors-anywhere.herokuapp.com, http://localhost:3000, https://localhost:3000")
+						.allowedOrigins("http://remora-223.herokuapp.com", "http://localhost:3000", "https://localhost:3000")
 						.allowedMethods("GET", "POST");
 			}
 		};
