@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000", "http://remora-223.herokuapp.com"})
 public class UploadController {
     private final UploadService uploadService;
 
