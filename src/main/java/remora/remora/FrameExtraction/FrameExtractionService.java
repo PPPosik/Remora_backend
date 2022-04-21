@@ -39,7 +39,7 @@ public class FrameExtractionService {
         }
 
         if (ret.size() == 0) {
-            log.debug("Extraction Fail, Video Not Found");
+            log.error("Extraction Fail, Video Not Found");
             throw new NotFoundVideoException();
         }
 

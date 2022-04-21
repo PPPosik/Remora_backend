@@ -29,7 +29,7 @@ public class TranslationController {
 
         try {
             if (request.text.size() != request.needTranslation.size()) {
-                log.debug("Translated is {}", "fail");
+                log.error("Translated is {}", "fail");
                 throw new RequestDataLengthDifferentException("Translated fail, text length : " + request.text.size() + ", needTranslation length : " + request.needTranslation.size());
             }
 
@@ -42,7 +42,7 @@ public class TranslationController {
             response.message = "Success";
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("Translated is {}", "fail");
+            log.error("Translated is {}", "fail");
             response.success = false;
             response.message = e.toString();
             response.text = null;

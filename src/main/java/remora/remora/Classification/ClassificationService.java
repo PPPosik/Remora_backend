@@ -39,7 +39,7 @@ public class ClassificationService {
 
         DetectionLanguageCode language = languageDetectionModel.detectLanguage(translatedText);
         if (language != DetectionLanguageCode.KO && language != DetectionLanguageCode.EN) {
-            log.debug("Classification Fail, Language is not supported");
+            log.error("Classification Fail, Language is not supported");
             throw new NotSupportedLanguageException("Language(" + language.toString() + ") is not supported");
         }
 
@@ -72,7 +72,7 @@ public class ClassificationService {
             writer.write(str);
             writer.close();
         } catch (IOException e) {
-            log.debug("WriteOriginText Fail, {}", e.getMessage());
+            log.error("WriteOriginText Fail, {}", e.getMessage());
             throw new IOException("writeOriginText fail : " + e);
         }
     }

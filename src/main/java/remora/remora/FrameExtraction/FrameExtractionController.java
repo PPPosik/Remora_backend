@@ -37,7 +37,7 @@ public class FrameExtractionController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("Frame extraction is {}, Exception : {}", "fail", e.getMessage());
+            log.error("Frame extraction is {}, Exception : {}", "fail", e.getMessage());
             response.success = false;
             response.message = e.getMessage();
             response.frameSet = null;

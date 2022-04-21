@@ -42,12 +42,12 @@ public class OcrService {
             }
             reader.close();
         } else {
-            log.debug("OCR Fail, OCR module error");
+            log.error("OCR Fail, OCR module error");
             throw new OcrModuleException();
         }
 
         if (ret.length() == 0) {
-            log.debug("OCR Fail, There is no text in video");
+            log.error("OCR Fail, There is no text in video");
             throw new NotExistTextException();
         }
 

@@ -44,13 +44,13 @@ public class UploadService {
         } catch (Exception e) {
             e.printStackTrace();
 
-            log.debug("Request file = {}", file.getOriginalFilename());
-            log.debug("Upload request is {}", "fail");
+            log.error("Request file = {}", file.getOriginalFilename());
+            log.error("Upload request is {}", "fail");
             response.success = false;
             response.videoCode = "-1";
             response.message = e.getMessage();
             response.needTranslation = request.getNeedTranslate();
-            log.debug("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
+            log.error("Video code = {}, Need Translation = {}", response.videoCode, response.needTranslation);
         }
 
         return response;

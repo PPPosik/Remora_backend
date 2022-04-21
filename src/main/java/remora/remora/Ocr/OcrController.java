@@ -29,7 +29,7 @@ public class OcrController {
 
         try {
             if (request.frameSet.size() != request.videoCode.size()) {
-                log.debug("Request data length different. frameSet length : {}, videoCode : {}", request.frameSet.size(), request.videoCode.size());
+                log.error("Request data length different. frameSet length : {}, videoCode : {}", request.frameSet.size(), request.videoCode.size());
                 throw new RequestDataLengthDifferentException("frameSet length : " + request.frameSet.size() + ", videoCode length : " + request.videoCode.size());
             }
 
@@ -41,7 +41,7 @@ public class OcrController {
             response.message = "success";
         } catch (Exception e) {
             e.printStackTrace();
-            log.debug("Frame extraction is {}, Exception : {}", "fail", e.getMessage());
+            log.error("Frame extraction is {}, Exception : {}", "fail", e.getMessage());
             response.success = false;
             response.message = e.toString();
             response.text = null;
