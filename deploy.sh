@@ -17,7 +17,7 @@ else
 fi
 
 echo ">>>> $JAR_PATH java execute."
-nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+nohup java -jar $JAR_PATH > /home/server/remora/logs/log 2> /home/server/remora/logs/error &
 sleep 5
 CURRENT_PID=$(pgrep -f $APP_NAME)
 echo ">>>> New PID: $CURRENT_PID"
