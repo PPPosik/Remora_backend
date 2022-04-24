@@ -45,7 +45,8 @@ public class ClassificationService {
 
         writeOriginText(translatedText);
 
-        if (Cli.exec(classificationModulePath, classificationInputPath)) {
+        String args = generateArgs(language, classificationInputPath);
+        if (Cli.exec(classificationModulePath, args)) {
             BufferedReader reader = new BufferedReader(new FileReader(classificationResultPath));
 
             String str;
@@ -75,5 +76,21 @@ public class ClassificationService {
             log.error("WriteOriginText Fail, {}", e.getMessage());
             throw new IOException("writeOriginText fail : " + e);
         }
+    }
+
+    private String generateArgs(DetectionLanguageCode language, String path, String... str) {
+        int mode = 2;
+
+        switch (language) {
+            case KO: mode = 0; break;
+            case EN: mode = 1; break;
+        }
+
+        StringBuilder sb = new StringBuilder(mode + " " + path);
+        for (String s : str) {
+            sb.append(" " + s);
+        }
+
+        return sb.toString();
     }
 }
