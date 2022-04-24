@@ -7,7 +7,7 @@ public class Cli {
         }
 
         try {
-            Process process = Runtime.getRuntime().exec(String.format(command, args));
+            Process process = Runtime.getRuntime().exec(command + " " + args);
             process.waitFor();
             return true;
         } catch (Exception e) {
