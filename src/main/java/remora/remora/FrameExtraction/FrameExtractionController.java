@@ -30,14 +30,14 @@ public class FrameExtractionController {
             for (String path : request.videoCode) {
                 response.frameSet.add(frameExtractionService.frameExtract(path));
             }
-            log.info("Frame extraction is {}", "success");
+            log.info("Frame extraction success");
             response.success = true;
             response.message = "Success";
             response.videoCode = request.videoCode;
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Frame extraction is {}, Exception : {}", "fail", e.getMessage());
+            log.error("Frame extraction fail={}", e.getMessage());
             response.success = false;
             response.message = e.getMessage();
             response.frameSet = null;

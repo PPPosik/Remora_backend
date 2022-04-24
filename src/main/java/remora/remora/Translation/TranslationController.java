@@ -29,20 +29,22 @@ public class TranslationController {
 
         try {
             if (request.text.size() != request.needTranslation.size()) {
-                log.error("Translated is {}", "fail");
+                log.error("Translated is fail");
                 throw new RequestDataLengthDifferentException("Translated fail, text length : " + request.text.size() + ", needTranslation length : " + request.needTranslation.size());
             }
 
             for (int i = 0; i < request.text.size(); i++) {
-                response.translatedText.add(translationService.translate(request.text.get(i), request.needTranslation.get(i)));
+                String result = translationService.translate(request.text.get(i), request.needTranslation.get(i));
+                response.translatedText.add(result);
                 response.text.add(request.text.get(i));
+                log.info("Translation result={}", result);
             }
-            log.info("Translated is {}", "success");
+            log.info("Translated is success");
             response.success = true;
             response.message = "Success";
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Translated is {}", "fail");
+            log.error("Translation fail, Exception={}", e.getMessage());
             response.success = false;
             response.message = e.toString();
             response.text = null;

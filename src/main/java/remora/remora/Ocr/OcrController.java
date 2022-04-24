@@ -34,14 +34,16 @@ public class OcrController {
             }
 
             for (int i = 0; i < request.videoCode.size(); i++) {
-                response.text.add(ocrService.detection(request.frameSet.get(i), request.videoCode.get(i)));
+                String result = ocrService.detection(request.frameSet.get(i), request.videoCode.get(i));
+                response.text.add(result);
+                log.info("Ocr result={}", result);
             }
-            log.info("Frame extraction is {}", "success");
+            log.info("Ocr success");
             response.success = true;
             response.message = "success";
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("Frame extraction is {}, Exception : {}", "fail", e.getMessage());
+            log.error("Ocr fail, Exception={}", e.getMessage());
             response.success = false;
             response.message = e.toString();
             response.text = null;

@@ -49,7 +49,7 @@ public class ExtractionThread extends Thread {
 
                     if ((picture = grab.seekToFramePrecise(i).getNativeFrame()) != null) {
                         frameSet.add(i);
-                        log.info("Extraction : {}, Width : {}, Height : {}", i, picture.getWidth(), picture.getHeight());
+
                         BufferedImage bufferedImage = AWTUtil.toBufferedImage(picture);
                         ImageIO.write(bufferedImage, "png", new File(framePath + path + "_" + i + ".png"));
                         log.info("Write : {}_{}.png", path, i);
@@ -57,7 +57,7 @@ public class ExtractionThread extends Thread {
                 }
             }
         } catch (IOException | JCodecException e) {
-            log.error("Extraction Fail, {}", e.getMessage());
+            log.error("Extraction Fail={}", e.getMessage());
             frameSet.clear();
             e.printStackTrace();
         }

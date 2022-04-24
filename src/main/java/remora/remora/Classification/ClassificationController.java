@@ -13,6 +13,7 @@ import remora.remora.Classification.dto.ClassificationRequestDto;
 import remora.remora.Classification.dto.ClassificationResponseDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class ClassificationController {
@@ -32,15 +33,21 @@ public class ClassificationController {
         try {
             for (int i = 0; i < request.translatedText.size(); i++) {
                 response.translatedText.add(request.translatedText.get(i));
-                response.keywords.add(classificationService.classification(request.translatedText.get(i)));
+                List<String> result = classificationService.classification(request.translatedText.get(i));
+                response.keywords.add(result);
+
+                log.info("Classification result");
+                for (String s : result) {
+                    log.info("{}", s);
+                }
             }
-            log.info("Classification is {}", "success");
+            log.info("Classification success");
             response.success = true;
             response.message = "Success";
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.info("Classification is {}, Exception : {}", "fail", e.getMessage());
+            log.info("Classification fail={}", e.getMessage());
             response.success = false;
             response.message = e.getMessage();
             response.translatedText = null;
