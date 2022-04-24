@@ -51,7 +51,6 @@ public class ClassificationService {
 
             String str;
             while ((str = reader.readLine()) != null) {
-                log.info("keyword : {}", str);
                 keywords.add(str);
             }
             reader.close();

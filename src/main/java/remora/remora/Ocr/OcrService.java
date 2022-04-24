@@ -37,7 +37,6 @@ public class OcrService {
 
             String str;
             while ((str = reader.readLine()) != null) {
-                log.info("{}", str);
                 ret.append(str + "\n");
             }
             reader.close();
